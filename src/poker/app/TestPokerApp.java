@@ -18,10 +18,15 @@ public class TestPokerApp {
 	
 	public static void main(String[] args) throws AWTException, InterruptedException{
 		PlayNowApp PNApp = new PlayNowApp();
-				PNApp.Open();
+		PNApp.Open();
 		Thread.sleep(12000);
 		PNApp.Maximize();
-		PNApp.Login();
+		
+	//	PNApp.FindImageAndClickCenter("chinnu-acer", "password-fld", "png");
+//		PNApp.Login();
+		PNApp.FindTables("texas holdem",  true);
+		PNApp.SelectTable();
+		PNApp.JoinTable();
 //		PNApp.Close();
 		
 /*

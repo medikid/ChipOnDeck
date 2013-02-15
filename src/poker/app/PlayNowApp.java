@@ -3,7 +3,6 @@ package poker.app;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -21,22 +20,29 @@ import org.sikuli.api.visual.DesktopCanvas;
 import org.sikuli.api.visual.ScreenPainter;
 import org.sikuli.script.App;
 
+import poker.app.logger.Logger;
+
 public class PlayNowApp {
-	String USERNAME = "ragavgroups";
-	String PASSWORD = "Ragav76";
-	String PATH_EXE = "C:\\Program Files (x86)\\Poker Heaven\\poker.exe";
-	String PATH_IMAGE_FOLDER = "\\images" + "\\chinnu-acer";
-	String APP_WINDOW_TITLE = "Poker Heaven";
+	private String USERNAME = "sam.vict";
+	private String PASSWORD = "lubdub123";
+	private String POKER_APP_PROVIDER = "Dusk Till Dawn Poker";
+	private String PATH_EXE = "C:\\Program Files (x86)\\" + POKER_APP_PROVIDER +"\\poker.exe";
+	private String PATH_IMAGE_FOLDER = "\\images" + "\\chinnu-acer";
+	private String APP_WINDOW_TITLE = "Poker Heaven";
 	private Object AppWindowTitle;
+	private ScreenRegion MAIN_SCREEN;
+	private Logger Logger = new Logger();
 	static Mouse mouse = new DesktopMouse();
 	static Keyboard keyboard = new DesktopKeyboard();
 	static Canvas canvas = new DesktopCanvas();
 	static ScreenPainter painter = new ScreenPainter();
-	static String PokerHeavenApp = "C:\\Program Files (x86)\\Poker Heaven\\poker.exe";
 	static Robot robot = null;
 	
 	public PlayNowApp() throws AWTException{
 		robot = new Robot();
+		MAIN_SCREEN = new DesktopScreenRegion();
+		
+		Logger.PrintLog("Consrtuctor", "PlayNowApp obj initiated");
 	}
 	
 	public static void Launch(){
@@ -55,17 +61,17 @@ public class PlayNowApp {
 			e.printStackTrace();
 		}
 		
-		keyboard.type(PokerHeavenApp);
+		keyboard.type(PATH_EXE);
 		robot.keyPress(KeyEvent.VK_ENTER);
 		robot.keyRelease(KeyEvent.VK_ENTER);
 		
-		
+		Logger.PrintLog("Open", "Opened Playnow App");
 	}
 	
 	public void Close(){
 		App.focusedWindow().highlight(10);
 		App.close(APP_WINDOW_TITLE);
-		
+		Logger.PrintLog("Close", "Closed Playnow App");
 	}
 	
 	private String _getResourcePath(String ResourceFolder, String FileCategory, String FileName, String FileExt){
@@ -92,39 +98,43 @@ public class PlayNowApp {
 	}
 	
 	public Target GetImageTarget(String ImageCategory, String ImageName, String ImageExt){
-		URL maxButton = GetImageURL(ImageCategory,ImageName, ImageExt);
+		URL imgURL = GetImageURL(ImageCategory, ImageName, ImageExt);
 		// Define an image target on the screen               
-		Target imageTarget = new ImageTarget(maxButton);
+		Target imageTarget = new ImageTarget(imgURL);
+		
+		Logger.PrintLog("GetImageTarget", "Image Target " + imgURL.toString() + " requested");
 		return imageTarget;
 	}
 	
+	public ScreenRegion FindImageTargetOnScreen(Target imgTarget){
+		ScreenRegion sr = new DesktopScreenRegion();
+		canvas.addBox(sr).display(2);
+		ScreenRegion reg = null;
+		reg = sr.find(imgTarget);
+		canvas.addBox(reg).display(2);
+		Logger.PrintLog("FindImageTargetOnScreen", "Image Target " + imgTarget.toString() + " Found at " + reg.toString() );
+		
+		return reg;
+	}
+	
 	public ScreenRegion FindImageOnScreen(String ImageCategory, String ImageName, String ImageExt){
-		URL maxButton = GetImageURL(ImageCategory,ImageName, ImageExt);
-//		File maxButton = new File("D:\\wamp\\www\\poker\\src\\images\\maximize-btn.png");
-		ScreenRegion s = new DesktopScreenRegion();	
-		
-		// Define an image target on the screen               
-		Target imageTarget = new ImageTarget(maxButton);
-		// Issue the find command and get a new screen region
-		// 'r' corresponding to the screen region occupied
-		// by the found target
-		ScreenRegion r = s.find(imageTarget);
-		
-		return r;
+		Target imgTarget = GetImageTarget(ImageCategory, ImageName, ImageExt);
+		ScreenRegion reg = FindImageTargetOnScreen(imgTarget);
+		return reg;
 	}
 	
 	public ScreenRegion FindTextOnScreen(String strToFind){
 		TextTarget txtTarget = new TextTarget(strToFind);
-		ScreenRegion sr = new DesktopScreenRegion();
-		ScreenRegion txtImg = sr.find(txtTarget);
+		ScreenRegion txtImg = MAIN_SCREEN.find(txtTarget);
 		return txtImg;
 	}
 	
 	private void _imageClickCenter(ScreenRegion reg){
+		Logger.PrintLog("_imageClickCenter", "Image clicked at center " + reg.getCenter().toString());
 		mouse.click(reg.getCenter());
 	}
 	
-	public void imageHightlight(ScreenRegion reg, String shape, int duration){
+	public void imageHighlight(ScreenRegion reg, String shape, int duration){
 		switch(shape){
 		case "rectangle":
 			canvas.addBox(reg).display(duration);
@@ -159,14 +169,12 @@ public class PlayNowApp {
 	}
 	
 	public void FindImageAndClickCenter(String ImageCategory, String ImageName, String ImageExt){
-		ScreenRegion sr = this.FindImageOnScreen(ImageCategory,ImageName, ImageExt);
+		ScreenRegion sr = FindImageOnScreen(ImageCategory, ImageName, ImageExt);		
 		_imageClickCenter(sr);
 	}
 	
 	public void Maximize(){	
-		ScreenRegion sr = FindImageOnScreen("chinnu-acer", "maximize-btn", "png");
-		_imageClickCenter(sr);
-		imageBlink(sr, "rectangle", 10);
+		this.FindImageAndClickCenter("chinnu-acer", "maximize-btn", "png");		
 	}
 	
 	public static void Minimize(){
@@ -174,26 +182,35 @@ public class PlayNowApp {
 	}
 	
 	public void Login(){
-		FindImageAndClickCenter("chinnu-acer", "loginnow-btn", "png");
-		FindImageAndClickCenter("chinnu-acer", "password-field", "png");
-		keyboard.type(PASSWORD);
-		FindImageAndClickCenter("chinnu-acer", "loginnow-btn", "png");
+		this.FindImageAndClickCenter("chinnu-acer", "login-btn", "png");
+		this.FindImageAndClickCenter("chinnu-acer", "password-fld", "png");
+		this.keyboard.type(PASSWORD);
+		this.FindImageAndClickCenter("chinnu-acer", "login-btn", "png");
 	}
 	
 	public static void SetPokerVariant(){
 		
 	}
 	
-	public static void FindTables(){
+	public void FindTables(String pokerVariant, Boolean practiceMode){
+		switch(pokerVariant){
+		case "texas holdem":
+			this.FindImageAndClickCenter("chinnu-acer", "texas-holdem-btn", "png");
+			break;
+		}
+		
+		if (practiceMode == true){
+			this.FindImageAndClickCenter("chinnu-acer", "practice-btn", "png");
+		}
 		
 	}
 	
-	public static void SelectTable(){
-	
+	public void SelectTable(){
+		this.FindImageAndClickCenter("chinnu-acer", "go-to-table-btn", "png");
 	}
 	
-	public static void JoinTable(){
-		
+	public void JoinTable(){
+		this.FindImageAndClickCenter("chinnu-acer", "join-table-btn", "png");
 	}
 
 }
