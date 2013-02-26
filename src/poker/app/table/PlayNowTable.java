@@ -1,13 +1,64 @@
 package poker.app.table;
 
 
+import org.sikuli.api.DesktopScreenRegion;
+import org.sikuli.api.ImageTarget;
+import org.sikuli.api.ScreenLocation;
 import org.sikuli.api.ScreenRegion;
+import org.sikuli.api.ScreenRegionRecorder;
+import org.sikuli.api.robot.desktop.DesktopScreen;
+import org.sikuli.api.visual.DesktopCanvas;
+import org.sikuli.script.*;
+import org.sikuli.script.Region;
+import org.sikuli.script.UnionScreen;
+import org.sikuli.script.natives.*;
 
-public class PlayNowTable {
+import poker.PokerAPI;
+
+public class PlayNowTable extends PokerAPI {
 	
-	private ScreenRegion table;
+	private DesktopScreenRegion table;
 	private String tableTitle;
+	private int TABLE_NUMBER;
 	
+	public PlayNowTable(int tableNumber){
+		desktopRegionCanvas.addBox(MAIN_SCREEN).display(10);		
+		this.TABLE_NUMBER = tableNumber;
+	}
+	
+	public void positionTableByTableNumber(){
+		
+	}
+	
+	public void _getScreenLocationByTableNumber(){
+		
+	}
+	
+	public void _adjustWindowSize(){
+		ScreenRegion emptySeat = FindImageOnScreen("chinnu-acer", "empty-board", "png");
+	}
+	
+	public void findAllEmptySeats(){
+		ScreenRegion emptySeat = FindImageOnScreen("chinnu-acer", "empty-board", "png");
+		ScreenLocation centerLoc = emptySeat.getCenter();
+		desktopRegionCanvas.addCircle(centerLoc).display(8);
+		mouse.click(centerLoc);
+	//	this.imageBlink(emptySeat, "rectangle", 6 );
+	}
+	
+	public void calibrateRegion(String regName){
+		
+	}
+	
+	public Region selectRegion(String regName){
+		
+		UnionScreen Us = new UnionScreen();
+		Region sr = Us.selectRegion(regName);
+		
+		return sr;
+	}
+	
+/*	
 	static{
 		 try{
 		  System.loadLibrary("WFrame"); // load WFrame.dll
@@ -24,7 +75,7 @@ public class PlayNowTable {
 		int _hwnd = getForegroundHwnd();
 		System.out.println( "top window hwnd is " + String.valueOf(_hwnd) );
 	}
-	/*
+	
 	public focusTable(){
 		//http://stackoverflow.com/questions/6662956/handle-external-windows-using-java
 	}
