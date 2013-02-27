@@ -51,18 +51,8 @@ public class TestPokerApp  {
 		DesktopScreen desktop = new DesktopScreen(0);
 		DesktopMouse mouse = new DesktopMouse();
 		System.out.println("The screen size is " + desktop.getBounds().toString() +"The mouse is at position " + mouse.getLocation().toString());
-
-		Window w1 = new Window(WindowType.WINDOW, "Poker | PlayNow.com");
-		Window w2 = new Window(WindowType.TABLE, "1 - MicroBBJ/LotC-C 2 - Table: 11732478 - Poker | PlayNow.com");
-		w1.focus();
-		Thread.sleep(5000);
-		w2.focus();
-		Thread.sleep(5000);
-		w1.focus();
-		Thread.sleep(5000);
-		w2.focus();
 		
-		int pw2 = GetWindowHandle.findWindow(className, "1 - MicroBBJ/LotC-C 2 - Table: 11732478 - Poker | PlayNow.com")
+		EnumAllWindows.main(null);
 		/*
 		//w.resize(500, 500);
 		w1.move(0, 0);
