@@ -33,6 +33,7 @@ import org.sikuli.api.robot.desktop.DesktopScreen;
 import org.sikuli.api.visual.ScreenPainter;
 import org.sikuli.core.*;
 import org.sikuli.ocr.*;
+import org.sikuli.script.Region;
 
 import poker.PokerAPI;
 import poker.app.Timer.TimerListener;
@@ -51,21 +52,33 @@ public class TestPokerApp  {
 		DesktopMouse mouse = new DesktopMouse();
 		System.out.println("The screen size is " + desktop.getBounds().toString() +"The mouse is at position " + mouse.getLocation().toString());
 
-		String ImageCategory = "chinnu-acer";
-		String ImageName = "maximize-btn";
-		String ImageExt = "png";
+		Window w1 = new Window(WindowType.WINDOW, "Poker | PlayNow.com");
+		Window w2 = new Window(WindowType.TABLE, "1 - MicroBBJ/LotC-C 2 - Table: 11732478 - Poker | PlayNow.com");
+		w1.focus();
+		Thread.sleep(5000);
+		w2.focus();
+		Thread.sleep(5000);
+		w1.focus();
+		Thread.sleep(5000);
+		w2.focus();
 		
+		int pw2 = GetWindowHandle.findWindow(className, "1 - MicroBBJ/LotC-C 2 - Table: 11732478 - Poker | PlayNow.com")
+		/*
+		//w.resize(500, 500);
+		w1.move(0, 0);
+		w1.resize(500, 450);
+		//w.mouseGlide(new Point(476, 251), new Point(1176, 951));
 		
-	
-		PokerAPI pki = new PokerAPI();
-		Target imgTarget = pki.GetImageTarget(ImageCategory, ImageName, ImageExt);
-		System.out.println("Image target is " + imgTarget.toString());
-		ScreenRegion sr = pki.getDesktopScreen();
-		ScreenRegion match = sr.find(imgTarget);
-		pki.imageHighlight(match, "rectangle", 10);
-				//		System.out.println("Screen bounds are " + sr.toString() ); //+ " and Image found at " + match.toString());
-//		pki.FindImageTargetOnScreen(imgTarget);
-   
+		Thread.sleep(3000);
+		w2.focus();
+		Thread.sleep(5000);
+		//w.resize(500, 500);
+		w2.move(510, 0);
+		w2.resize(500, 450);
+		//w.mouseGlide(new Point(476, 251), new Point(1176, 951));
+		
+		Thread.sleep(3000);
+		*/
 	}
 	
 }
