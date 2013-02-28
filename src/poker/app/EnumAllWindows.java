@@ -36,8 +36,8 @@ public class EnumAllWindows {
             if(wText.contains("Poker | PlayNow.com")){
             	user32.INSTANCE.SetForegroundWindow(hWnd);
             	user32.INSTANCE.BringWindowToTop(hWnd);
-            	user32.INSTANCE.MoveWindow(hWnd, 500, 100, 500, 500, true);
-         //   	user32.SetWindowPos(hWnd, Pointer.createConstant(0), 0, 0, 500, 500, 0x0040);
+           // 	user32.INSTANCE.MoveWindow(hWnd, 500, 100, 500, 500, true);
+            	user32.SetWindowPos(hWnd, Pointer.createConstant(0), 0, 0, 500, 500, 0x0040);
             	System.out.println("Brought window on top with text " + hWnd + ", total " + ++count
                         + " Text: " + wText);
             }

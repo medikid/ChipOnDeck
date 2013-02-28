@@ -16,11 +16,14 @@ import com.sun.jna.platform.win32.WinDef.UINT_PTR;
 import com.sun.jna.platform.win32.WinUser.WNDENUMPROC;
 
 public class WindowManager {
-	List<Window> Windows = new ArrayList<Window>();
-	final User32 user32 = User32.INSTANCE;    
+	List<Window> Windows;
+	List<Integer> Tables;
+	final User32 user32;
 	
 	public WindowManager(){
-		
+		Windows = new ArrayList<Window>();
+		Tables = new ArrayList<Integer>();
+		user32 = User32.INSTANCE;    
 	}
 	
 	public void findAllWindows(final String keyWord) {
@@ -43,6 +46,7 @@ public class WindowManager {
 							try {
 								Window window = new Window(WindowType.TABLE, wText, hWnd);
 								Windows.add(window);
+								Tables.add(Windows.indexOf(window));
 								System.out.println("Table " + wText + " Added to windows list");
 							} catch (AWTException e) {
 								// TODO Auto-generated catch block
@@ -115,21 +119,43 @@ public class WindowManager {
 	 
 	 @SuppressWarnings({ "static-access", "static-access" })
 	public void fitNmoveWindow(HWND hWnd, Rectangle windowRect, Boolean isRepaint ){
-		 //user32.MoveWindow(hWnd, 0, 0, 500, 400, false);
-		// user32.MoveWindow(hWnd, windowRect.x, windowRect.y, windowRect.width, windowRect.height, isRepaint);
-		 user32.SetWindowPos(hWnd, user32.HWND_TOP, 0, 0, 500, 500, User32.SWP_SHOWWINDOW);
+		 user32.MoveWindow(hWnd, windowRect.x, windowRect.y, windowRect.width, windowRect.height, isRepaint);		
 	 }
 	 
-	 public void tileWindows(){
+	 public void setWindowPos(HWND hWnd, Rectangle windowRect, Pointer user32_HWND, int user32_SWP){		 
+		 user32.SetWindowPos(hWnd, user32_HWND, windowRect.x, windowRect.y, windowRect.width, windowRect.height, user32_SWP);
+	 }
+	 
+	 public void tileWindows(boolean tablesFirst){
 		int noOfWindows = this.Windows.size();
 		if (noOfWindows > 0){
 			List<Rectangle> winGrids = getDesktopGrid(noOfWindows);
 				int ind = 0;
-				for(Window win: this.Windows){
-					setWindowActive(win.hWnd);
-					fitNmoveWindow(win.hWnd, winGrids.get(ind), true);
-					ind++;
-					System.out.println("Window " + win.getWindowTitle() +" is tiled now ");
+				if(tablesFirst){
+					for(int winTableIndex: this.Tables){
+						Window winTable = this.Windows.get(winTableIndex);
+						setWindowActive(winTable.hWnd);
+						fitNmoveWindow(winTable.hWnd, winGrids.get(ind), true);
+						ind++;
+						System.out.println("Window Table" + winTable.getWindowTitle() +" is tiled now ");
+					}
+					
+					for(Window win: this.Windows){
+						if (win.getWindowType() == WindowType.APP){
+							setWindowActive(win.hWnd);
+							fitNmoveWindow(win.hWnd, winGrids.get(ind), true);
+							System.out.println("Window App" + win.getWindowTitle() +" is tiled now ");
+						}
+					}
+					
+					
+				} else {
+					for(Window win: this.Windows){
+						setWindowActive(win.hWnd);
+						fitNmoveWindow(win.hWnd, winGrids.get(ind), true);
+						ind++;
+						System.out.println("Window " + win.getWindowTitle() +" is tiled now ");
+					}
 				}
 		}
 	 }
