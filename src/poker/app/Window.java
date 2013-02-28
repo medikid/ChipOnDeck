@@ -15,6 +15,8 @@ import org.sikuli.api.robot.desktop.DesktopMouse;
 import org.sikuli.script.App;
 import org.sikuli.script.Region;
 
+import com.sun.jna.platform.win32.WinDef.HWND;
+
 public class Window {
 	public App app;
 	public Region window;
@@ -24,6 +26,7 @@ public class Window {
 	public DesktopMouse mouse;
 	public DesktopKeyboard keyboard;
 	public Robot robot;
+	public  HWND hWnd;
 	
 	
 	public Window(WindowType WType, String WindowTitle) throws AWTException{
@@ -35,6 +38,26 @@ public class Window {
 		this.setWindowTitle(WindowTitle);
 		this.setWindowRegion();
 		
+	}
+	
+	public Window(WindowType WType, String WindowTitle, HWND hWnd) throws AWTException{
+		app = new App(WindowTitle);
+		mouse = new DesktopMouse();
+		keyboard = new DesktopKeyboard();
+		robot = new Robot();
+		this.setWindowType(WType);
+		this.setWindowHandle(hWnd);
+		this.setWindowTitle(WindowTitle);
+		this.setWindowRegion();
+		
+	}
+	
+	public void setWindowHandle(HWND hWindow){
+		this.hWnd = hWindow;
+	}
+	
+	public HWND getWindowHandle(){
+		return this.hWnd;
 	}
 	
 	public void setWindowTitle(String WindowTitle){
@@ -148,6 +171,11 @@ public class Window {
     	
     	Thread.sleep(1000);
     	robot.mouseRelease(InputEvent.BUTTON1_MASK);
+	}
+	
+	public void moveNfit(Rectangle rect) throws InterruptedException{
+		this.resize(rect.width, rect.height);
+		this.move(rect.x, rect.y);
 	}
 
 }
