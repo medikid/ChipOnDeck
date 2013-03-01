@@ -33,35 +33,22 @@ import poker.app.Timer;
 import poker.app.Timer.TimerListener;
 import poker.app.logger.Logger;
 
-public class PokerAPI {
+import poker.PokerAPIConstants.*;
 
-	public static String PlayNow_USERNAME = "ragavgroups";
-	public static  String PlayNow_PASSWORD = "Ragav76";
-	public static  String POKER_APP_PROVIDER = "Poker PlayNow.com";
-	public static  String PATH_EXE = "C:\\Program Files\\" + POKER_APP_PROVIDER +"\\poker.exe";
-	public static  String VMWARE_PLAYER_PATH = "F:\\VMware\\VMWare Player\\vmplayer";
-	public static  String VMWARE_MACHINE_PATH = "\"F:\\VMware\\VMWare Machines\\Windows 7\\Windows 7.vmx";
-	
-	public static  String POKER_TYPE;
-	public static  String PATH_IMAGE_FOLDER = "\\images" + "\\chinnu-acer";
-	public static  String APP_WINDOW_TITLE = "Poker | PlayNow.com";
-	public static  Object AppWindowTitle;	
+public class PokerAPI implements PokerAPIConstants{
 
-	public DesktopScreen desktopScreen = new DesktopScreen(0);
-	public ScreenRegion MAIN_SCREEN = new DesktopScreenRegion();	
-	public Logger Logger = new Logger();
-	public static Mouse mouse = new DesktopMouse();
-	public static Keyboard keyboard = new DesktopKeyboard();
-	public static ScreenRegionCanvas canvas;
-	public static DesktopCanvas desktopRegionCanvas = new DesktopCanvas();
-	public static ScreenPainter painter = new ScreenPainter();
-	public static Robot robot = null;
-	public DesktopScreenRegion selectedScreenRegion;
-	
 	public PokerAPI() throws AWTException{
 		this.setDesktopScreen();
-		robot = new Robot();
-		canvas = new ScreenRegionCanvas(this.MAIN_SCREEN);
+		desktopScreen = new DesktopScreen(0);
+		MAIN_SCREEN = new DesktopScreenRegion();
+		Logger = new Logger();
+		mouse = new DesktopMouse();
+		DesktopKeyboard keyboard = new DesktopKeyboard();
+		ScreenRegionCanvas canvas = null;
+		DesktopCanvas desktopRegionCanvas = new DesktopCanvas();
+		ScreenPainter painter = new ScreenPainter();
+		Robot robot = new Robot();
+		canvas = new ScreenRegionCanvas(MAIN_SCREEN);
 		
 	}
 	

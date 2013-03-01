@@ -92,7 +92,7 @@ public class TestPokerApp  {
 		*/
 		
 		PlayNowApp pna = new PlayNowApp();
-	//	pna.Open();
+		pna.Open();
 		WindowManager wm = new WindowManager();
 		wm.refresh();		
 		wm.setWindowActive(WindowType.VMWARE, "VMware Player");
