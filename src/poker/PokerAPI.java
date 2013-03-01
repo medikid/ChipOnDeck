@@ -1,6 +1,8 @@
 package poker;
 
+import java.awt.AWTException;
 import java.awt.Canvas;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
@@ -8,9 +10,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Random;
 
+import org.sikuli.api.DefaultScreenLocation;
 import org.sikuli.api.DesktopScreenRegion;
 import org.sikuli.api.ImageTarget;
+import org.sikuli.api.ScreenLocation;
 import org.sikuli.api.ScreenRegion;
 import org.sikuli.api.Target;
 import org.sikuli.api.TextTarget;
@@ -42,19 +47,22 @@ public class PokerAPI {
 	public static  String APP_WINDOW_TITLE = "Poker | PlayNow.com";
 	public static  Object AppWindowTitle;	
 
-	protected DesktopScreen desktopScreen = new DesktopScreen(0);
-	protected ScreenRegion MAIN_SCREEN = new DesktopScreenRegion();	
-	protected Logger Logger = new Logger();
-	protected static Mouse mouse = new DesktopMouse();
-	protected static Keyboard keyboard = new DesktopKeyboard();
-	protected static ScreenRegionCanvas screenRegionCanvas;
-	protected static DesktopCanvas desktopRegionCanvas = new DesktopCanvas();
-	protected static ScreenPainter painter = new ScreenPainter();
-	protected static Robot robot = null;
+	public DesktopScreen desktopScreen = new DesktopScreen(0);
+	public ScreenRegion MAIN_SCREEN = new DesktopScreenRegion();	
+	public Logger Logger = new Logger();
+	public static Mouse mouse = new DesktopMouse();
+	public static Keyboard keyboard = new DesktopKeyboard();
+	public static ScreenRegionCanvas canvas;
+	public static DesktopCanvas desktopRegionCanvas = new DesktopCanvas();
+	public static ScreenPainter painter = new ScreenPainter();
+	public static Robot robot = null;
 	public DesktopScreenRegion selectedScreenRegion;
 	
-	public PokerAPI(){
+	public PokerAPI() throws AWTException{
 		this.setDesktopScreen();
+		robot = new Robot();
+		canvas = new ScreenRegionCanvas(this.MAIN_SCREEN);
+		
 	}
 	
 	public void main(String[] args){
@@ -140,9 +148,8 @@ public class PokerAPI {
 	}
 	
 	public ScreenRegion FindImageTargetOnScreen(Target imgTarget){		
-		ScreenRegion reg = this.MAIN_SCREEN.find(imgTarget);
-		screenRegionCanvas = new ScreenRegionCanvas(this.MAIN_SCREEN);
-		screenRegionCanvas.addBox(reg).display(2);
+		ScreenRegion reg = this.MAIN_SCREEN.find(imgTarget);		
+		canvas.addBox(reg).display(2);
 //		Logger.PrintLog("FindImageTargetOnScreen", "Image Target " + imgTarget.toString() + " Found at " + reg.toString() );
 		System.out.println("FindImageTargetOnScreen" + "Image Target " + imgTarget.toString() + " Found at " + reg.toString() );
 		return reg;
@@ -151,8 +158,7 @@ public class PokerAPI {
 	public ScreenRegion FindImageTargetInsideThisRegion(ScreenRegion targetRegion, Target imgTarget){
 		ScreenRegion reg = null;
 		reg = targetRegion.find(imgTarget);
-		screenRegionCanvas = new ScreenRegionCanvas(targetRegion);
-		screenRegionCanvas.addBox(reg).display(10);
+		canvas.addBox(reg).display(10);
 //		Logger.PrintLog("FindImageTargetOnScreen", "Image Target " + imgTarget.toString() + " Found at " + reg.toString() );
 		System.out.println("FindImageTargetOnScreen" + "Image Target " + imgTarget.toString() + " Found at " + reg.toString() );
 		return reg;
@@ -262,6 +268,26 @@ public class PokerAPI {
 	
 	public void regionChangedEventHandler(){
 		
+	}
+	
+	public Point getRandPoint(Rectangle buttonRect){
+		int marginOffset = 2;
+		int X = buttonRect.x + marginOffset ;
+		int Y = buttonRect.y + marginOffset ;
+		int W = buttonRect.width - (marginOffset * 2);
+		int H = buttonRect.height - (marginOffset * 2);
+
+		Random randGen = new Random();
+
+		Point randPoint = new Point( X + randGen.nextInt(W), Y + randGen.nextInt(H) );
+		
+		return randPoint;	
+	}
+	
+	public void randClick(ScreenRegion sr){
+		Point randClickPoint = getRandPoint(sr.getBounds());		
+		mouse.click(new DefaultScreenLocation(sr.getScreen(), randClickPoint.x, randClickPoint.y));
+		System.out.println("Rand clicked at " + randClickPoint.toString());
 	}
 
 }

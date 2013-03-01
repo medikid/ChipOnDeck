@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import org.sikuli.api.DesktopScreenRegion;
 import org.sikuli.api.ImageTarget;
@@ -22,28 +23,33 @@ import org.sikuli.api.visual.ScreenPainter;
 import org.sikuli.script.App;
 
 import poker.PokerAPI;
+import poker.app.VMWare.PLAY_MODE;
+import poker.app.WindowManager.WindowType;
 import poker.app.logger.Logger;
 
 public class PlayNowApp extends PokerAPI {	
-	
+	private boolean VMWARE_MODE;
 	
 	
 	public PlayNowApp() throws AWTException{
 		robot = new Robot();
 		MAIN_SCREEN = new DesktopScreenRegion();
+		this.setVMwareMode(true);
 		
 		Logger.PrintLog("Consrtuctor", "PlayNowApp obj initiated");
 	}
 	
+	public void setVMwareMode(boolean mode){
+		this.VMWARE_MODE = mode;
+	}
 	
-	public void LaunchVMWarePlayer(){
-		Runtime rt = Runtime.getRuntime();
-		try {
-			rt.exec( this.VMWARE_PLAYER_PATH + " -X " + this.VMWARE_MACHINE_PATH );
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public boolean getVMwareMode(){
+		return this.VMWARE_MODE;
+	}
+	public void launchVMWarePlayer(PLAY_MODE mode) throws AWTException{
+		VMWare vm = new VMWare();
+		vm.open(mode);
+		robot.delay(10000);
 	}
 	
 	public void switchToVMWarePlayer(){
@@ -51,18 +57,32 @@ public class PlayNowApp extends PokerAPI {
 		vmApp.focus(1);
 	}
 	
-	public void Open(){
-		robot.keyPress(KeyEvent.VK_WINDOWS);
-		robot.keyPress(KeyEvent.VK_R);
-		robot.keyRelease(KeyEvent.VK_R);
-		robot.keyRelease(KeyEvent.VK_WINDOWS);
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public void Open() throws AWTException{
+		if (VMWARE_MODE){
+			WindowManager wm = new WindowManager();
+			if(wm.isWindowOpen(WindowType.VMWARE, "VMware Player")){
+				List<Window> vmWindows = wm.getWindows(WindowType.VMWARE, "VMware Player");
+				for(Window vmWin: vmWindows){
+					wm.setWindowActive(vmWin.getWindowHandle());
+				}
+			} else {
+				VMWare vm = new VMWare();
+				vm.open(PLAY_MODE.UNITY_MODE);
+				robot.delay(20000);
+				vm.openMenu("run");	
+			}
+		} else {		
+			robot.keyPress(KeyEvent.VK_WINDOWS);
+			robot.keyPress(KeyEvent.VK_R);
+			robot.keyRelease(KeyEvent.VK_R);
+			robot.keyRelease(KeyEvent.VK_WINDOWS);
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
 		keyboard.type(PATH_EXE);
 		robot.keyPress(KeyEvent.VK_ENTER);
 		robot.keyRelease(KeyEvent.VK_ENTER);

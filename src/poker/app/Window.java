@@ -15,6 +15,8 @@ import org.sikuli.api.robot.desktop.DesktopMouse;
 import org.sikuli.script.App;
 import org.sikuli.script.Region;
 
+import poker.app.WindowManager.WindowType;
+
 import com.sun.jna.platform.win32.WinDef.HWND;
 
 public class Window {

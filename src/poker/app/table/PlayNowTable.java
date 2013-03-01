@@ -1,6 +1,8 @@
 package poker.app.table;
 
 
+import java.awt.AWTException;
+
 import org.sikuli.api.DesktopScreenRegion;
 import org.sikuli.api.ImageTarget;
 import org.sikuli.api.ScreenLocation;
@@ -9,8 +11,6 @@ import org.sikuli.api.ScreenRegionRecorder;
 import org.sikuli.api.robot.desktop.DesktopScreen;
 import org.sikuli.api.visual.DesktopCanvas;
 import org.sikuli.script.*;
-import org.sikuli.script.Region;
-import org.sikuli.script.UnionScreen;
 import org.sikuli.script.natives.*;
 
 import poker.PokerAPI;
@@ -21,7 +21,7 @@ public class PlayNowTable extends PokerAPI {
 	private String tableTitle;
 	private int TABLE_NUMBER;
 	
-	public PlayNowTable(int tableNumber){
+	public PlayNowTable(int tableNumber) throws AWTException {
 		desktopRegionCanvas.addBox(MAIN_SCREEN).display(10);		
 		this.TABLE_NUMBER = tableNumber;
 	}

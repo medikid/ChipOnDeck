@@ -18,63 +18,190 @@ import com.sun.jna.platform.win32.WinUser.WNDENUMPROC;
 public class WindowManager {
 	List<Window> Windows;
 	List<Integer> Tables;
-	final User32 user32;
+	List<Integer> Lobby;
+	List<Integer> VMware;
+	final User32 user32;	
+	public enum WindowType{ WINDOW, APP, LOBBY, TABLE, VMWARE, MISC}
 	
 	public WindowManager(){
 		Windows = new ArrayList<Window>();
 		Tables = new ArrayList<Integer>();
-		user32 = User32.INSTANCE;    
+		Lobby = new ArrayList<Integer>();
+		VMware = new ArrayList<Integer>();				
+		user32 = User32.INSTANCE; 
 	}
 	
-	public void findAllWindows(final String keyWord) {
-		user32.EnumWindows(new WNDENUMPROC() {
-	         @SuppressWarnings("static-access")
+	public String toString(){		
+		StringBuilder result = new StringBuilder();
+		String newLine = System.getProperty("line.separator");
+		
+		int totalWindows = this.Windows.size();
+		result.append("Window Manager currently following(" + String.valueOf(totalWindows ) + ") windows active:");
+		result.append(newLine);
+		if (totalWindows > 0){
+			int i = 1;
+			for(Window win: this.Windows){
+				result.append( String.valueOf(i) + ". " + win.getWindowType().toString() + " - " + win.getWindowTitle());
+				result.append(newLine);
+				
+				i++;
+			}
+		}
+		return result.toString();
+	}
+	
+	public List<Window> getWindows(WindowType WinType, String KeyWord){
+		final String keyWord = KeyWord;
+		final List<Window> windows = new ArrayList<Window>();
+		final WindowType winType = WinType;
+		
+		user32.EnumWindows(new WNDENUMPROC(){
+			@Override
+			public boolean callback(HWND hWnd, Pointer arg1) {
+				byte[] windowText = new byte[512];
+	            user32.GetWindowTextA(hWnd, windowText, 512);
+	            String wText = Native.toString(windowText);
+	            
+	            if (wText.contains(keyWord)){	            	
+					try {
+						Window 	window = new Window(winType, wText, hWnd);
+						windows.add(window);
+					} catch (AWTException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+	            }	            
+				return true;
+			} }, null);
+		
+		return windows;
+	}
+	
+	public boolean isWindowOpen(WindowType WinType, String... optKeyWords){
+		boolean windowOpen = false;
+		WindowType winType = WinType;
+		String keyWord;
+		if (optKeyWords.length > 0){
+			keyWord = optKeyWords[0];
+		} else keyWord = this.getKeywordByWindowType(winType);
+		
+		List<Window> requestedWindows = this.getWindows(winType, keyWord);
+		if (requestedWindows.size() > 0){
+			windowOpen = true;
+		}
+		
+		return windowOpen;
+	}
+
+	public void addWindows(List<Window> windows){
+		for(Window win: windows){			
+			if (this.Windows.contains(win)){
+				System.out.println("Window " + win.getWindowTitle() + " is already in the Window Manager");
+			} else {				
+				WindowType winType = win.getWindowType();
+				switch(winType){
+					case LOBBY:
+						this.Windows.add(win);
+						Lobby.add(this.Windows.indexOf(win));
+						break;
+					case TABLE:
+						this.Windows.add(win);
+						Tables.add(this.Windows.indexOf(win));
+						break;
+					case VMWARE:
+						this.Windows.add(win);
+						VMware.add(this.Windows.indexOf(win));
+				}
+			}
+			
+		}
+	}
+	
+	public String getKeywordByWindowType(WindowType WinType){
+		final String keyWord;
+		switch(WinType){
+			case LOBBY:
+				keyWord = "Poker | PlayNow.com";
+				break;
+			case TABLE:
+				keyWord = "Table:";
+				break;
+			case VMWARE:
+				keyWord = "VMware Player";
+				break;
+			default:
+				keyWord = "Poker";
+					break;
+		}
+		
+		return keyWord;
+	}
+	
+	public List<Window> getWindowsByType(WindowType WinType){
+		final WindowType winType = WinType;
+		final String keyWord = getKeywordByWindowType(WinType);
+		final List<Window> windows = getWindows(winType, keyWord);
+		return windows;
+	}
+	
+	public void addWindowsByType(WindowType WinType){
+		List<Window> windows = getWindowsByType(WinType);
+		addWindows(windows);
+	}
+	
+	
+	public List<Window> findAllWindows() {
+		final List<Window> windows = new ArrayList<Window>();
+		
+		user32.EnumWindows(new WNDENUMPROC(){
+			WindowType winType = null;
 			@Override
 	         public boolean callback(HWND hWnd, Pointer arg1) {
 	            byte[] windowText = new byte[512];
 	            user32.GetWindowTextA(hWnd, windowText, 512);
 	            String wText = Native.toString(windowText);
 
-	            // get rid of this if block if you want all windows regardless of whether
-	            // or not they have text
 	            if (wText.isEmpty()) {
 	               return true;
-	            }
-	            
-	            if(wText.contains(keyWord)){
-	            	if (wText.contains("Table:")){	            		
-							try {
-								Window window = new Window(WindowType.TABLE, wText, hWnd);
-								Windows.add(window);
-								Tables.add(Windows.indexOf(window));
-								System.out.println("Table " + wText + " Added to windows list");
-							} catch (AWTException e) {
+	            } else {
+	            	try {	            		
+	            		if (wText.contains("Poker | PlayNow.com")){
+	            			if (wText.contains("Table:")){
+	            				winType = WindowType.TABLE;
+							} else {
+								winType = WindowType.LOBBY;
+							}
+	            		} else if (wText.contains("VMware Player")){
+	            			winType = WindowType.VMWARE;
+	            		} else winType = WindowType.MISC;
+	            		
+	            		Window window = new Window( winType, wText, hWnd);
+						windows.add(window);
+	            	} catch (AWTException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-	            	} else {
-						try {
-							Window window = new Window(WindowType.APP, wText, hWnd);
-							Windows.add(window);
-							System.out.println("Window " + wText + " Added to windows list");
-						} catch (AWTException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
 	            	}
-	            }
 	            return true;
-	         }
-	      }, null);
+	        }
+			
+		}, null);
 		
-		System.out.println("Found following windows :" + this.Windows.toString());
+		return windows;
+	}
+	
+	public void refresh(){
+		this.Windows.clear();
+		final List<Window> windows = findAllWindows();
+		addWindows(windows);
 	}
 	
 	 public int getWindowByHwnd(HWND hWnd){
 		 int requestedWindow = 0;
-		 for(Window win : Windows){
+		 for(Window win : this.Windows){
 			 if (win.hWnd == hWnd){
-				 requestedWindow = Windows.indexOf(win);
+				 requestedWindow = this.Windows.indexOf(win);
 			 }
 		 }
 		return requestedWindow;
@@ -82,9 +209,9 @@ public class WindowManager {
 	 
 	 public int getWindowByTitle(String title){
 		 int requestedWindow = 0;
-		 for(Window win : Windows){
+		 for(Window win : this.Windows){
 			 if (win.windowTitle.contains(title)){
-				 requestedWindow = Windows.indexOf(win);
+				 requestedWindow = this.Windows.indexOf(win);
 			 }
 		 }
 		return requestedWindow;
@@ -93,9 +220,9 @@ public class WindowManager {
 	 @SuppressWarnings({ "null", "rawtypes", "unchecked" })
 	public List<Integer> getWindowsByKeyword(String keyword){
 		 List<Integer> requestedWindows = null;
-		 for(Window win : Windows){
+		 for(Window win : this.Windows){
 			 if (win.windowTitle.contains(keyword)){
-				 requestedWindows.add(Windows.indexOf(win));
+				 requestedWindows.add(this.Windows.indexOf(win));
 			 }
 		 }
 		return requestedWindows;
@@ -104,9 +231,9 @@ public class WindowManager {
 	 @SuppressWarnings("null")
 	public List<Integer> getTables(){
 		 List<Integer> Tables = new ArrayList<Integer>();
-		 for(Window win : Windows){
+		 for(Window win : this.Windows){
 			 if (win.windowType == WindowType.TABLE){
-				 Tables.add(Windows.indexOf(win));
+				 Tables.add(this.Windows.indexOf(win));
 			 }
 		 }
 		return Tables;
@@ -115,6 +242,13 @@ public class WindowManager {
 	 public void setWindowActive(HWND hWnd){
 		user32.SetForegroundWindow(hWnd);
 		user32.BringWindowToTop(hWnd);
+	 }
+	 
+	 public void setWindowActive(WindowType WinType, String KeyWord){
+		List<Window> wins = this.getWindows(WinType, KeyWord);
+			for(Window win: wins){
+				this.setWindowActive(win.getWindowHandle());
+			}
 	 }
 	 
 	 @SuppressWarnings({ "static-access", "static-access" })
