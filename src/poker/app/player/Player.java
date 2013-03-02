@@ -1,33 +1,60 @@
 package poker.app.player;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.sikuli.api.ScreenRegion;
 
-import poker.app.player.iPlayer.ACTION_TYPE;
+import poker.app.player.EPlayerActionType;
 import poker.app.table.Table;
 
-public class Player implements iPlayer {
-	public Table table = null;
+public class Player implements IPlayer {
+	private Table table = null;
+	public String tableTag = null;
 	public int seatNumber = (Integer) null;
 	public String name =  null;
 	public String tag = null;
+	public Player prevPlayer = null;
+	public Player nextPlayer = null;
 	public double cash = (Double) null;
 	
 	public ScreenRegion DashRegion = null;
 	
-	public ACTION_TYPE action=null;
+	public EPlayerActionType action=null;
 	public double actionCash = (Double) null;
-	public boolean actionPending = false;
+	
+	public boolean isActionPending = false;
+	
+	public boolean isActionObserverActive = false;	
+	public ActionObserver actionObserver = null;
+	
+	private List<PlayerActionEventListener> _ActionEventListeners = new ArrayList<PlayerActionEventListener>();
+	
+	public Player(){		
+	}
 	
 //	#region 
 	
 	@Override
 	public void setTable(Table TableObj) {
 		this.table = TableObj;
+		this.setTableTag();
 	}
 
 	@Override
 	public Table getTable() {		
 		return this.table;
+	}
+	
+	@Override
+	public void setTableTag() {
+		this.tableTag = this.table.tag;
+	}
+
+	@Override
+	public String getTableTag() {		
+		return this.tableTag;
 	}
 
 	@Override
@@ -41,8 +68,8 @@ public class Player implements iPlayer {
 	}
 
 	@Override
-	public void setTag(){
-		this.tag = "P" + String.valueOf(this.seatNumber);
+	public void setTag(String Tag){
+		this.tag = Tag;
 	}
 
 	@Override
@@ -50,6 +77,27 @@ public class Player implements iPlayer {
 		return this.tag;
 	}
 	
+	@Override
+	public void setPrevPlayer(Player PrevPlayer) {
+		this.prevPlayer = PrevPlayer;
+		
+	}
+
+	@Override
+	public Player getPrevPlayer() {		
+		return this.prevPlayer;
+	}
+
+	@Override
+	public void setNextPlayer(Player NextPlayer) {
+		this.nextPlayer = NextPlayer;
+		
+	}
+
+	@Override
+	public Player getNextPlayer() {
+		return this.nextPlayer;
+	}
 
 	@Override
 	public void setName(String Name) {
@@ -72,29 +120,109 @@ public class Player implements iPlayer {
 	}
 
 	@Override
-	public void setAction(ACTION_TYPE Action, double[] ActionCash) {
-		this.action = Action;
-		if (ActionCash.length > 0){
-			this.actionCash = ActionCash[0];
-		} else this.actionCash = 0;
+	public void setAction(PlayerAction pAction) {
+		this.action = pAction.actionType;
+		this.actionCash = pAction.actionCash;
+		this.isActionPending = true;
 		
 	}
 
 	@Override
 	public void doAction() {
-		if (this.actionPending){
+		if (this.isActionPending){
 			
 		}
 		
 	}
 	
+
+	@Override
+	public void didAction(PlayerAction pAction) {
+		this.setAction(pAction);		
+		this.setActionPending(false);
+		this.passActionRequest();
+		
+		this.playerActionEventHandler(pAction);		
+	}
+	
+	
 	public void setActionPending(boolean isActionPending){
-		this.actionPending = isActionPending;		
+		this.isActionPending = isActionPending;		
 	}
 	
 	public boolean getActionPending(){
-		return this.actionPending;
+		return this.isActionPending;
+	}
+
+	@Override
+	public void passActionRequest(){
+		this.nextPlayer.actionRequestReceived();
+	}
+
+	@Override
+	public void actionRequestReceived() {
+		this.setActionPending(true);
+		
+	}
+
+	@Override
+	public void actionRequestPassed() {
+				
+	}
+
+	@Override
+	public void cancelAction() {
+		// TODO Auto-generated method stub
+		
 	}
 	
+	@Override
+	public void startActionObserver() {
+		if(this.isActionObserverActive == false){
+			this.isActionObserverActive = true;
+		}
+		
+		this.actionObserver = new ActionObserver(this);
+		this.actionObserver.run();
+		
+	}
+
+	@Override
+	public void stopActionObserver() {
+		if (this.isActionObserverActive = true){
+			this.isActionObserverActive = false;
+		}
+		
+		this.actionObserver.stop();
+		
+	}
+
+
+
+	@Override
+	public void addActionEventListener(	PlayerActionEventListener ActionEventListener) {
+		this._ActionEventListeners.add(ActionEventListener);
+		
+	}
+
+	@Override
+	public void removeActionEventListener(PlayerActionEventListener ActionEventListener) {
+		this._ActionEventListeners.remove(ActionEventListener);
+		
+	}
+
+	@Override
+	public void playerActionEventHandler(PlayerAction pAction) {
+		PlayerActionEvent e = new PlayerActionEvent(this, pAction);
+		
+		Iterator<PlayerActionEventListener> i = this._ActionEventListeners.iterator();
+		while(i.hasNext()){
+			((PlayerActionEventListener) i.next()).onAction(e);
+		}
+	}
+
+	
+
+
 
 }

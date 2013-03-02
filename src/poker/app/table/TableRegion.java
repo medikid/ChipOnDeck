@@ -2,6 +2,7 @@ package poker.app.table;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.sikuli.api.DesktopScreenRegion;
@@ -13,9 +14,11 @@ import org.sikuli.api.visual.Canvas;
 import org.sikuli.api.visual.DesktopCanvas;
 
 import poker.Images;
+import poker.app.Window;
+import poker.app.player.Player;
 
 public class TableRegion {
-	ScreenRegion tableWindow;
+	ScreenRegion tableWindowRegion;
 	ScreenRegion tableFrame;
 	ScreenRegion playerDash1;
 	ScreenRegion playerDash2;
@@ -33,17 +36,22 @@ public class TableRegion {
 	double rowGridOffset = 0.200;
 	double colGridOffset = 0.166;
 	
-	public TableRegion(ScreenRegion TableWindow){
-		this.setTableWindow(TableWindow);
+	public TableRegion(Window tableWindow){
+		ScreenRegion TableWindowRegion =  new DesktopScreenRegion(
+				tableWindow.getWindowRegion().x,
+				tableWindow.getWindowRegion().y,
+				tableWindow.getWindowRegion().w,
+				tableWindow.getWindowRegion().h);
+		this.setTableWindow(TableWindowRegion);
 		canvas = new DesktopCanvas();
 	}
 	
 	public void setTableWindow(ScreenRegion TableWindow){
-		this.tableWindow = TableWindow;
+		this.tableWindowRegion = TableWindow;
 	}
 	
 	public ScreenRegion getTableWindow(){
-		return this.tableWindow;
+		return this.tableWindowRegion;
 	}
 	
 	public void setTableFrame(){
@@ -79,9 +87,9 @@ public class TableRegion {
 		Target TableAnchorW = new ImageTarget(Images.PNTableAnchorW);
 		Target TableAnchorH = new ImageTarget(Images.PNTableAnchorH);
 		
-		ScreenRegion TableFrameXY = this.tableWindow.find(TableAnchorXY);
-		ScreenRegion TableFrameW = this.tableWindow.find(TableAnchorW);
-		ScreenRegion TableFrameH = this.tableWindow.find(TableAnchorH);		
+		ScreenRegion TableFrameXY = this.tableWindowRegion.find(TableAnchorXY);
+		ScreenRegion TableFrameW = this.tableWindowRegion.find(TableAnchorW);
+		ScreenRegion TableFrameH = this.tableWindowRegion.find(TableAnchorH);		
 		
 		int X = TableFrameXY.getBounds().x;
 		int Y = TableFrameXY.getBounds().y;		
@@ -123,7 +131,8 @@ public class TableRegion {
 		canvas.addBox(col5).display(20);
 	}
 	
-	public void derivePlayerDash(){
+	public List<Player> derivePlayerDash(){
+		List<Player> Players = new ArrayList<Player>();
 		ScreenRegion playerDash;
 		Target tPlayerDashAnchor = new ImageTarget(Images.PNTablePlayerDashAnchor);
 		tPlayerDashAnchor.setMinScore(0.95);
@@ -142,10 +151,15 @@ public class TableRegion {
 					);
 			
 			int seatNumber = this.deriveSeatNumber(playerDash);
+			
+			Player pl = new Player();
+			pl.setSeatNumber(seatNumber);
+			Players.add(pl);
 					
 			this.canvas.addBox(playerDash).display(5);
 			this.canvas.addLabel(playerDash, String.valueOf(seatNumber)).display(1);
 		}
+		return Players;
 		
 	}
 	

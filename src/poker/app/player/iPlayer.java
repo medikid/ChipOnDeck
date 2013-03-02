@@ -4,16 +4,24 @@ import org.sikuli.api.ScreenRegion;
 
 import poker.app.table.Table;
 
-public interface iPlayer {	
-	public enum ACTION_TYPE { FOLD, CHECK, CALL, BET, RAISE, RERAISE }
+public interface IPlayer {	
 	
-	public void setTable(Table TableObj);		
+	public void setTable(Table TableObj);
 	public Table getTable();
+	
+	public void setTableTag();		
+	public String getTableTag();
 	
 	public void setSeatNumber(int SeatNumber);	
 	public int getSeatNumber();
 	
-	public void setTag();
+	public void setPrevPlayer(Player prevPlayer);
+	public Player getPrevPlayer();
+	
+	public void setNextPlayer(Player nextPlayer);
+	public Player getNextPlayer();
+	
+	public void setTag(String Tag);
 	public String getTag();
 	
 	public void setName(String Name);
@@ -22,6 +30,19 @@ public interface iPlayer {
 	public void setCash(double Cash);
 	public double getCash();
 	
-	public void setAction(ACTION_TYPE action, double[] ActionCash);
+	public void passActionRequest();
+	public void actionRequestReceived();	
+	public void actionRequestPassed();
+	public void setAction(PlayerAction pAction);
 	public void doAction();
+	public void didAction(PlayerAction pAction);
+	public void cancelAction();
+	
+	public void startActionObserver();
+	public void stopActionObserver();
+	
+	public void addActionEventListener(PlayerActionEventListener ActionEventListener);
+	public void removeActionEventListener(PlayerActionEventListener ActionEventListener);
+	
+	public void playerActionEventHandler(PlayerAction pAction);
 }
