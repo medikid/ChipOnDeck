@@ -16,6 +16,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -37,16 +38,19 @@ import org.sikuli.api.robot.desktop.DesktopScreen;
 import org.sikuli.api.visual.Canvas;
 import org.sikuli.api.visual.DesktopCanvas;
 import org.sikuli.api.visual.ScreenPainter;
+import org.sikuli.api.visual.ScreenRegionCanvas;
 import org.sikuli.core.*;
 import org.sikuli.ocr.*;
 import org.sikuli.script.Region;
 
 import poker.PokerAPI;
 import poker.User32;
+import poker.Images;
 import poker.app.Timer.TimerListener;
 import poker.app.VMWare.PLAY_MODE;
 import poker.app.WindowManager.WindowType;
 import poker.app.table.PlayNowTable;
+import poker.app.table.TableRegion;
 
 public class TestPokerApp  {
 	public Point startPoint;
@@ -57,11 +61,16 @@ public class TestPokerApp  {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws Exception {
 		TestPokerApp tpa = new TestPokerApp();
-		DesktopScreen desktop = new DesktopScreen(0);
-		DesktopMouse mouse = new DesktopMouse();
-		System.out.println("The screen size is " + desktop.getBounds().toString() +"The mouse is at position " + mouse.getLocation().toString());
+		DesktopScreen desktop = new DesktopScreen(0);		
+		ScreenRegion sr = new DesktopScreenRegion(desktop.getBounds().x, desktop.getBounds().y, desktop.getBounds().width, desktop.getBounds().height);
+				
+		TableRegion tr = new TableRegion(sr);
+		tr.setTableFrame();
+		tr.hightlightTableFrame(1);
+//		tr.deriveTableFrameGrids();
+		tr.derivePlayerDash();
 		
-		ScreenRegion sr = new DesktopScreenRegion(0, 0, 1300, 750);
+		
 		/*
 		Canvas c = new DesktopCanvas();
 		c.addBox(sr).display(3);
@@ -91,13 +100,20 @@ public class TestPokerApp  {
 		
 		*/
 		
-		PlayNowApp pna = new PlayNowApp();
-		pna.Open();
-		WindowManager wm = new WindowManager();
-		wm.refresh();		
-		wm.setWindowActive(WindowType.VMWARE, "VMware Player");
+				
 		
+	}
+	
+	public String getComputerName(){
+		String computerName = null;
+		try {
+		    computerName = InetAddress.getLocalHost().getHostName();
+		    System.out.println("COmputer name is " + computerName.toString());
+		} catch(Exception ex) {
+		   
+		}
 		
+		return computerName;
 	}
 	
 }
