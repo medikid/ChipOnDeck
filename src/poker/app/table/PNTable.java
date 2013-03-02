@@ -15,13 +15,13 @@ import org.sikuli.script.natives.*;
 
 import poker.PokerAPI;
 
-public class PlayNowTable extends PokerAPI {
+public class PNTable extends PokerAPI {
 	
 	private DesktopScreenRegion table;
 	private String tableTitle;
 	private int TABLE_NUMBER;
 	
-	public PlayNowTable(int tableNumber) throws AWTException {
+	public PNTable(int tableNumber) throws AWTException {
 		desktopRegionCanvas.addBox(MAIN_SCREEN).display(10);		
 		this.TABLE_NUMBER = tableNumber;
 	}

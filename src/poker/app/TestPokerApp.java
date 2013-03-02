@@ -49,7 +49,7 @@ import poker.Images;
 import poker.app.Timer.TimerListener;
 import poker.app.VMWare.PLAY_MODE;
 import poker.app.WindowManager.WindowType;
-import poker.app.table.PlayNowTable;
+import poker.app.table.PNTable;
 import poker.app.table.TableRegion;
 
 public class TestPokerApp  {
@@ -71,34 +71,7 @@ public class TestPokerApp  {
 		tr.derivePlayerDash();
 		
 		
-		/*
-		Canvas c = new DesktopCanvas();
-		c.addBox(sr).display(3);
-		
-		PokerAPI pki = new PokerAPI();
-		Target instant_hand_replay_btn = pki.GetImageTarget("chinnu-acer", "instant-hand-replay-btn", "png");
-		Target chips_tray = pki.GetImageTarget("chinnu-acer", "chips-tray", "png");
-		Target chat_send_box = pki.GetImageTarget("chinnu-acer", "chat-send-box", "png");
-		Target announcer_chair = pki.GetImageTarget("chinnu-acer", "announcer-chair", "png");
-		
-		List<ScreenRegion> matches = new ArrayList<ScreenRegion>();
-		ScreenRegion ihrb = sr.find(instant_hand_replay_btn);
-		ScreenRegion csb = sr.find(chat_send_box);
-		ScreenRegion ac = sr.find(announcer_chair);
-		
-		ScreenRegion tableFrame = new DesktopScreenRegion(
-						ihrb.getBounds().x,
-						ihrb.getBounds().y,
-						(ac.getBounds().x + ac.getBounds().width) - ihrb.getBounds().x,
-						(csb.getBounds().y + csb.getBounds().height) - ihrb.getBounds().y);
-		c.addBox(ihrb).display(3);
-		c.addBox(csb).display(3);
-		c.addBox(ac).display(3);
-		c.addBox(tableFrame).display(3);
-		
-		
-		
-		*/
+
 		
 				
 		
