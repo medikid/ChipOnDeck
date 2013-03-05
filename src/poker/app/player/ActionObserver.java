@@ -45,7 +45,7 @@ public class ActionObserver implements Runnable, StateChangeListener {
 	
 	public void start(){
 		if (this.ActionObserverThread == null){
-			this.ActionObserverThread = new Thread(this, this.p.tableTag + "-" + this.p.tag + "-ActionObserver");
+			this.ActionObserverThread = new Thread(this, this.p.tableTag + "-" + this.p.tag + ": ActionObserver Started");
 			this.ActionObserverThread.start();
 		}
 	}
@@ -57,7 +57,7 @@ public class ActionObserver implements Runnable, StateChangeListener {
 	@Override
 	public void stateChanged(StateChangeEvent e) {
 		EPlayerActionType sAction = (EPlayerActionType) e.getNewState();
-		System.out.println( p.tableTag + "-" + p.tag + ": Action " + sAction.toString() );		
+		System.out.println( p.tableTag + "-" + p.tag + ": Action = " + sAction.toString() );		
 		p.didAction(new PlayerAction(sAction) );
 		this.stop();
 		

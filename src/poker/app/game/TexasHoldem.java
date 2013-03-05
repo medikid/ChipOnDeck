@@ -2,7 +2,8 @@ package poker.app.game;
 
 import java.util.List;
 
-import poker.app.card.Card;
+import poker.app.game.card.Card;
+
 
 public class TexasHoldem implements IGame {
 	int EGameType;

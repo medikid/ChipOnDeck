@@ -14,6 +14,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.awt.Stroke;
 
 import javax.swing.JFrame;
@@ -28,6 +29,7 @@ public class DisplaySystem {
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		frame= new JFrame();
 		frame.setAlwaysOnTop(true);
+		frame.setUndecorated(true); // Only required for Mac computers. remove this line if this cause problems
 		DisplayPanel c = new DisplayPanel(PanelType.GLASS_BACKGROUND);
 		c.setLayout(new BorderLayout());
         
@@ -35,12 +37,12 @@ public class DisplaySystem {
         c.add("Center", jp);
         c.setPreferredSize(frame.getSize());
         frame.getContentPane().add(c);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);//.EXIT_ON_CLOSE);
         frame.setExtendedState( Frame.MAXIMIZED_BOTH);	//set full screen maximized to start
-        frame.setUndecorated(true); // Only required for Mac computers. remove this line if this cause problems
+        
         frame.pack();        
         frame.setVisible(true);
-        com.sun.awt.AWTUtilities.setWindowOpaque(frame,false);
+        com.sun.awt.AWTUtilities.setWindowOpaque(frame, false);
 	}
 	
 	
@@ -82,6 +84,29 @@ public class DisplaySystem {
 	        f.pack();        
 	        f.setVisible(true);
 	        com.sun.awt.AWTUtilities.setWindowOpaque(f,false);
+	        
+	        try {
+	        	DisplayPanel jp1 = new DisplayPanel(PanelType.PLAYER_SCOREBOARD);
+				Thread.sleep(500);
+				jp.removeAll();
+				jp.updateUI();
+		     //   c.remove(jp);
+		        c.add("South", jp1);
+				Thread.sleep(500);
+		        
+		        
+		        f.repaint();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+				
+				//jp.g2.clearRect(0,  0,  500,  500);
+				//jp.clearRect(new Rectangle(0, 0, 500, 500));
+				//jp.repaint(new Rectangle(0, 0, 500, 500));
+				//f.setVisible(false);
+				//f.dispose();
+			
 	    }
 	    
 }

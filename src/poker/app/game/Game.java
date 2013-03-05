@@ -1,6 +1,7 @@
 package poker.app.game;
 
-import poker.app.card.Card;
+import poker.app.game.card.Card;
+
 
 public class Game {
 	int EGameType;

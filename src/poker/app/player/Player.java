@@ -21,6 +21,11 @@ public class Player implements IPlayer {
 	
 	public ScreenRegion DashRegion = null;
 	
+	public EPlayerStatusType status=null;
+	
+	public boolean isStatusObserverActive = false;	
+	public StatusObserver statusObserver = null;
+	
 	public EPlayerActionType action=null;
 	public double actionCash = (Double) null;
 	
@@ -117,6 +122,36 @@ public class Player implements IPlayer {
 	@Override
 	public double getCash() {		
 		return this.cash;
+	}
+	
+
+	@Override
+	public void setStatus(EPlayerStatusType PlayerStatus) {
+		this.status = PlayerStatus;		
+	}
+
+	@Override
+	public EPlayerStatusType getStatus() {
+		return this.status;		
+	}
+
+	@Override
+	public void startStatusObserver() {
+		if(this.isStatusObserverActive == false){
+			this.isStatusObserverActive = true;
+			this.statusObserver = new StatusObserver(this);
+			this.statusObserver.start();
+		}
+		
+	}
+
+	@Override
+	public void stopStatusObserver() {
+		if(this.isStatusObserverActive == true){
+			this.isStatusObserverActive = false;
+			this.statusObserver.stop();
+		}
+		
 	}
 
 	@Override
@@ -220,6 +255,7 @@ public class Player implements IPlayer {
 			((PlayerActionEventListener) i.next()).onAction(e);
 		}
 	}
+
 
 	
 

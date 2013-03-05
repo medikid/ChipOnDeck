@@ -21,6 +21,13 @@ public class Images {
 	public static final URL PlayerActionRaise = Images.class.getResource("Images/PlayNowApp/Table/player-action-raise.png");
 	public static final URL PlayerActionReraise = Images.class.getResource("Images/PlayNowApp/Table/player-action-reraise.png");
 	
+	public static final URL PlayerStatusPSmall = Images.class.getResource("Images/PlayNowApp/Table/player-status-psmall.png");
+	public static final URL PlayerStatusPBig = Images.class.getResource("Images/PlayNowApp/Table/player-status-pbig.png");
+	public static final URL PlayerStatusWinner = Images.class.getResource("Images/PlayNowApp/Table/player-status-winner.png");
+	public static final URL PlayerStatusMuck = Images.class.getResource("Images/PlayNowApp/Table/player-status-muck.png");
+	public static final URL PlayerStatusSitout = Images.class.getResource("Images/PlayNowApp/Table/player-status-sitout.png");
+	public static final URL PlayerStatusBuyin = Images.class.getResource("Images/PlayNowApp/Table/player-status-buyin.png");
+	
 	public static final URL PlayerDashTemplate1 = Images.class.getResource("Images/PlayNowApp/Table/player-dash-template1.png");
 	public static final URL PlayerDashTemplate2 = Images.class.getResource("Images/PlayNowApp/Table/player-dash-template2.png");
 	public static final URL PlayerDashTemplate3 = Images.class.getResource("Images/PlayNowApp/Table/player-dash-template3.png");
@@ -31,6 +38,7 @@ public class Images {
 	public static final URL PlayerDashTemplate8 = Images.class.getResource("Images/PlayNowApp/Table/player-dash-template8.png");
 	public static final URL PlayerDashTemplate9 = Images.class.getResource("Images/PlayNowApp/Table/player-dash-template9.png");
 	public static final URL PlayerDashTemplate10 = Images.class.getResource("Images/PlayNowApp/Table/player-dash-template10.png");
+	
 	
 	
 	

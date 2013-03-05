@@ -15,6 +15,7 @@ import org.sikuli.api.visual.DesktopCanvas;
 
 import poker.Images;
 import poker.app.Window;
+import poker.app.WindowManager;
 import poker.app.player.Player;
 
 public class TableRegion {
@@ -36,21 +37,31 @@ public class TableRegion {
 	double rowGridOffset = 0.200;
 	double colGridOffset = 0.166;
 	
+	public TableRegion(){
+		
+	}
+	
 	public TableRegion(Window tableWindow){
 		ScreenRegion TableWindowRegion =  new DesktopScreenRegion(
 				tableWindow.getWindowRegion().x,
 				tableWindow.getWindowRegion().y,
 				tableWindow.getWindowRegion().w,
 				tableWindow.getWindowRegion().h);
-		this.setTableWindow(TableWindowRegion);
+		this.setTableWindowRegion(TableWindowRegion);
 		canvas = new DesktopCanvas();
 	}
 	
-	public void setTableWindow(ScreenRegion TableWindow){
+	
+	public TableRegion(ScreenRegion TableWindowRegion){
+		this.setTableWindowRegion(TableWindowRegion);
+		canvas = new DesktopCanvas();
+	}	
+	
+	public void setTableWindowRegion(ScreenRegion TableWindow){
 		this.tableWindowRegion = TableWindow;
 	}
 	
-	public ScreenRegion getTableWindow(){
+	public ScreenRegion getTableWindowRegion(){
 		return this.tableWindowRegion;
 	}
 	

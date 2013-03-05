@@ -1,11 +1,15 @@
 package poker.app;
 
+import poker.app.GUI.GlassOverlay;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 import java.awt.AWTException;
 import java.awt.AlphaComposite;
@@ -15,6 +19,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Robot;
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
@@ -27,6 +32,9 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import net.sourceforge.tess4j.Tesseract;
+import net.sourceforge.tess4j.TesseractException;
 
 import org.eclipse.swt.widgets.Display;
 import org.sikuli.api.*;
@@ -49,7 +57,9 @@ import poker.Images;
 import poker.app.Timer.TimerListener;
 import poker.app.VMWare.PLAY_MODE;
 import poker.app.WindowManager.WindowType;
+import poker.app.table.ETableType;
 import poker.app.table.PNTable;
+import poker.app.table.Table;
 import poker.app.table.TableRegion;
 
 public class TestPokerApp  {
@@ -58,35 +68,14 @@ public class TestPokerApp  {
     float alpha = 0.85F;
 
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "static-access" })
 	public static void main(String[] args) throws Exception {
 		TestPokerApp tpa = new TestPokerApp();
-		DesktopScreen desktop = new DesktopScreen(0);		
-		ScreenRegion sr = new DesktopScreenRegion(desktop.getBounds().x, desktop.getBounds().y, desktop.getBounds().width, desktop.getBounds().height);
-				
-		TableRegion tr = new TableRegion(sr);
-		tr.setTableFrame();
-		tr.hightlightTableFrame(1);
-//		tr.deriveTableFrameGrids();
-		tr.derivePlayerDash();
 		
-		
-
-		
-				
+		poker.app.test.Controller.main(null);
 		
 	}
 	
-	public String getComputerName(){
-		String computerName = null;
-		try {
-		    computerName = InetAddress.getLocalHost().getHostName();
-		    System.out.println("COmputer name is " + computerName.toString());
-		} catch(Exception ex) {
-		   
-		}
-		
-		return computerName;
-	}
+	
 	
 }

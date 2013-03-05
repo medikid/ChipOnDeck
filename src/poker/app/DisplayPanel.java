@@ -5,6 +5,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Stroke;
 
 import javax.swing.JPanel;
@@ -12,6 +13,7 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class DisplayPanel extends JPanel {
 	public PanelType panelType;
+	public Graphics2D g2;
 	
 	public DisplayPanel(PanelType pnlType){
 		this.panelType = pnlType;
@@ -19,7 +21,10 @@ public class DisplayPanel extends JPanel {
 	
         @Override
         public void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D)g.create();
+        	super.setOpaque(false);
+        	super.paintComponent(g);
+        	
+            g2 = (Graphics2D)g.create();
             switch(this.panelType){
             	case GLASS_BACKGROUND:
             		g2.setColor(Color.gray);
@@ -42,15 +47,23 @@ public class DisplayPanel extends JPanel {
 	                 g2.drawArc(100, 100, 100, 100, 360, -90);
             		break;
             	case PLAYER_SCOREBOARD:
+            		g2.setColor(Color.green);
+            		g2.fill3DRect(100, 100, 100, 100, true);
             		break;
             	case TABLE_DASHBOARD:
             		break;
             	default:
             		break;
             
-            }
-                          
+            }                         
            
+        }
+        
+        public void clearRect(Rectangle rect){
+        //	Graphics g = this.getGraphics();
+        //	super.paintComponent(g);
+        //	g.clearRect(rect.x, rect.y, rect.width, rect.height);
+        	this.repaint(rect.x, rect.y, rect.width, rect.height);
         }
     
 

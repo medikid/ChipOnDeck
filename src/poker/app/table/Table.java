@@ -6,15 +6,17 @@ import org.sikuli.api.DesktopScreenRegion;
 import org.sikuli.api.ScreenRegion;
 
 import poker.app.Window;
+import poker.app.WindowManager;
+import poker.app.WindowManager.WindowType;
 import poker.app.game.EGameType;
 import poker.app.player.Player;
 import poker.app.table.ETableType;
 
-public class Table implements ITable {
-	public int tableNumber = (Integer) null;
+public class Table extends TableRegion implements ITable {
+	public int tableNumber = 0;
 	public String tableName = null;
 	public String tag = null;
-	public int tableSize = (Integer) null;
+	public int tableSize = 0;
 	public ETableType tableType =  null;
 	public EGameType gameType = null;
 	
@@ -35,10 +37,12 @@ public class Table implements ITable {
 	private int _totalPlayers = 0;
 	private int _totalActivePlayers = 0;
 	
-	public Table(ETableType TableType, int TableSize){
-		this.setTableType(TableType);
+	public Table(int TableSize){
+		super();
 		this.setTableSize(TableSize);
+		this.setTableType(TableSize);			
 	}
+	
 
 	@Override
 	public void setGameType(EGameType GameType) {
@@ -53,6 +57,20 @@ public class Table implements ITable {
 	@Override
 	public void setTableType(ETableType TableType) {
 		this.tableType = TableType;		
+	}
+	
+	public void setTableType(int TableSize) {
+		switch(TableSize){
+		case 2:
+			this.setTableType(ETableType.TWO);
+			break;
+		case 6:
+			this.setTableType(ETableType.SIX);
+			break;
+		case 10:
+			this.setTableType(ETableType.TEN);
+			break;			
+		}		
 	}
 
 	@Override
@@ -110,6 +128,15 @@ public class Table implements ITable {
 	public Window getTableWindow() {
 		return this.tableWindow;
 	}
+	
+	@Override
+	public void grabTableWindow(String titleKeyWord){
+		WindowManager wm = new WindowManager();
+		List<Window> tables = wm.getWindows(WindowType.TABLE, titleKeyWord);
+		this.setTableWindow(tables.get(0));
+		wm = null;
+	}
+	
 
 	@Override
 	public void setTableFrame(ScreenRegion TableFrame) {
@@ -468,7 +495,10 @@ public class Table implements ITable {
 	}
 
 	@Override
-	public void deriveTableFrame() {		
+	public void deriveNsetTableFrame() {
+		if (this.tableWindow == null){
+			this.grabTableWindow("Table");
+		}
 		TableRegion tr = new TableRegion(this.tableWindow);
 		tr.deriveTableFrame();
 		this.tableFrame = tr.tableFrame;
@@ -477,7 +507,7 @@ public class Table implements ITable {
 	
 
 	@Override
-	public void derivePlayerDashes() {
+	public void deriveNsetPlayerDashes() {
 		TableRegion tr = new TableRegion(this.tableWindow);
 		List<Player> Players = tr.derivePlayerDash();
 		for (Player pl:Players){

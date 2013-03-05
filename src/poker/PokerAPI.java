@@ -8,6 +8,7 @@ import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Random;
@@ -288,6 +289,18 @@ public class PokerAPI {
 		Point randClickPoint = getRandPoint(sr.getBounds());		
 		mouse.click(new DefaultScreenLocation(sr.getScreen(), randClickPoint.x, randClickPoint.y));
 		System.out.println("Rand clicked at " + randClickPoint.toString());
+	}
+	
+	public String getComputerName(){
+		String computerName = null;
+		try {
+		    computerName = InetAddress.getLocalHost().getHostName();
+		    System.out.println("COmputer name is " + computerName.toString());
+		} catch(Exception ex) {
+		   
+		}
+		
+		return computerName;
 	}
 
 }

@@ -30,6 +30,12 @@ public interface IPlayer {
 	public void setCash(double Cash);
 	public double getCash();
 	
+	public void setStatus(EPlayerStatusType PlayerStatus);
+	public EPlayerStatusType getStatus();
+	
+	public void startStatusObserver();
+	public void stopStatusObserver();
+	
 	public void passActionRequest();
 	public void actionRequestReceived();	
 	public void actionRequestPassed();
@@ -45,4 +51,5 @@ public interface IPlayer {
 	public void removeActionEventListener(PlayerActionEventListener ActionEventListener);
 	
 	public void playerActionEventHandler(PlayerAction pAction);
+	
 }

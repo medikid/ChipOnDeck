@@ -26,6 +26,7 @@ public interface ITable {
 	public void setTableTag(String TableTag);
 	public String getTableTag();
 	
+	public void grabTableWindow(String titleKeyWord);
 	public void setTableWindow(Window TableWindow);
 	public Window getTableWindow();
 	
@@ -33,8 +34,8 @@ public interface ITable {
 	public ScreenRegion getTableFrame();
 	
 	public void deriveAllTableRegions();
-	public void deriveTableFrame();
-	public void derivePlayerDashes();
+	public void deriveNsetTableFrame();
+	public void deriveNsetPlayerDashes();
 	public void highlightTableRegions();
 	
 	public void addPlayer(int SeatNumber, Player player);
@@ -48,5 +49,6 @@ public interface ITable {
 	public int getTotalActivePlayers();
 	
 	public void passActionRequest(int passerSeatNumber);
+	
 	
 }
