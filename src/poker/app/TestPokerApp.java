@@ -71,8 +71,9 @@ public class TestPokerApp  {
 	@SuppressWarnings({ "unused", "static-access" })
 	public static void main(String[] args) throws Exception {
 		TestPokerApp tpa = new TestPokerApp();
-		
-		poker.app.test.Controller.main(null);
+		GlassOverlay gO = new GlassOverlay();
+		gO.main(null);
+		//poker.app.test.ControllerGUI.main(null);
 		
 	}
 	
