@@ -31,12 +31,12 @@ public class ActionObserver implements Runnable, StateChangeListener {
 		ScreenRegion pDash = p.DashRegion;
 		while (ActionObserverThread == myThread){
 			
-			pDash.addState(new ImageTarget(Images.PlayerActionFold), EPlayerActionType.FOLD );
-			pDash.addState(new ImageTarget(Images.PlayerActionCheck), EPlayerActionType.CHECK );
-			pDash.addState(new ImageTarget(Images.PlayerActionCall), EPlayerActionType.CALL );
-			pDash.addState(new ImageTarget(Images.PlayerActionBet), EPlayerActionType.BET);
-			pDash.addState(new ImageTarget(Images.PlayerActionRaise), EPlayerActionType.RAISE);
-			pDash.addState(new ImageTarget(Images.PlayerActionReraise), EPlayerActionType.RERAISE);
+			pDash.addState(new ImageTarget(Images.PlayerActionFold), TPlayerAction.FOLD );
+			pDash.addState(new ImageTarget(Images.PlayerActionCheck), TPlayerAction.CHECK );
+			pDash.addState(new ImageTarget(Images.PlayerActionCall), TPlayerAction.CALL );
+			pDash.addState(new ImageTarget(Images.PlayerActionBet), TPlayerAction.BET);
+			pDash.addState(new ImageTarget(Images.PlayerActionRaise), TPlayerAction.RAISE);
+			pDash.addState(new ImageTarget(Images.PlayerActionReraise), TPlayerAction.RERAISE);
 			
 			pDash.addStateChangeEventListener(this);
 		}
@@ -56,7 +56,7 @@ public class ActionObserver implements Runnable, StateChangeListener {
 
 	@Override
 	public void stateChanged(StateChangeEvent e) {
-		EPlayerActionType sAction = (EPlayerActionType) e.getNewState();
+		TPlayerAction sAction = (TPlayerAction) e.getNewState();
 		System.out.println( p.tableTag + "-" + p.tag + ": Action = " + sAction.toString() );		
 		p.didAction(new PlayerAction(sAction) );
 		this.stop();

@@ -3,13 +3,13 @@ package poker.app.table;
 import org.sikuli.api.ScreenRegion;
 
 import poker.app.Window;
-import poker.app.game.EGameType;
+import poker.app.game.TGame;
 import poker.app.player.Player;
 
 public interface ITable {
 		
-	public void setGameType(EGameType GameType);
-	public EGameType getGameTable();
+	public void setGameType(TGame GameType);
+	public TGame getGameTable();
 	
 	public void setTableType(ETableType TableType);
 	public ETableType getTableType();
@@ -42,13 +42,8 @@ public interface ITable {
 	public void removePlayer(int SeatNumber);	
 	public Player getPlayer(int SeatNumber);
 	
-	public void updateTotalPlayers(int noPlayers);
+	public void resetTotalPlayers(int noPlayers);
 	public int getTotalPlayers();
-	
-	public void updateTotalActivePlayers(int noActivePlayers);
-	public int getTotalActivePlayers();
-	
-	public void passActionRequest(int passerSeatNumber);
 	
 	
 }

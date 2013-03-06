@@ -1,6 +1,7 @@
 package poker.app;
 
-import poker.app.GUI.GlassOverlay;
+import poker.app.GUI.Controller.Controller;
+import poker.app.GUI.Displayer.GlassOverlay;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -66,17 +67,30 @@ public class TestPokerApp  {
 	public Point startPoint;
 	int rule = AlphaComposite.SRC_OVER;
     float alpha = 0.85F;
-
+	
+	
+		public String s;
+		
+		public void setString(String S){
+			this.s = S;
+		}
+		public String getString(){
+			return this.s;
+		}
+	
+	
 
 	@SuppressWarnings({ "unused", "static-access" })
 	public static void main(String[] args) throws Exception {
 		TestPokerApp tpa = new TestPokerApp();
-		GlassOverlay gO = new GlassOverlay();
-		gO.main(null);
+		Controller controller = new Controller(true, true);
+		controller.main(null);
+	//	gO.main(null);
 		//poker.app.test.ControllerGUI.main(null);
 		
+		
+		
 	}
-	
 	
 	
 }

@@ -2,11 +2,11 @@ package poker.app.player;
 
 import java.util.EventObject;
 
-import poker.app.player.EPlayerActionType;
+import poker.app.player.TPlayerAction;
 
 @SuppressWarnings("serial")
 public class PlayerActionEvent extends EventObject {
-	EPlayerActionType Action;
+	TPlayerAction Action;
 	double ActionCash;
 	String Player;
 	String Table;

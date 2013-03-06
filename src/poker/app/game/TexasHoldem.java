@@ -8,7 +8,7 @@ import poker.app.game.card.Card;
 public class TexasHoldem implements IGame {
 	int EGameType;
 	int GameNumber;
-	EGameRoundType currentRound;
+	TRound currentRound;
 	
 	double potSize;
 	
@@ -35,25 +35,25 @@ public class TexasHoldem implements IGame {
 	}
 
 	@Override
-	public void setGameType(poker.app.game.EGameType GameType) {
+	public void setGameType(poker.app.game.TGame GameType) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public poker.app.game.EGameType getGameType() {
+	public poker.app.game.TGame getGameType() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void setCurrentRound(EGameRoundType GameRound) {
+	public void setCurrentRound(TRound GameRound) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public EGameRoundType getCurrentRound() {
+	public TRound getCurrentRound() {
 		// TODO Auto-generated method stub
 		return null;
 	}

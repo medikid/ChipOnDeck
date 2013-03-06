@@ -10,11 +10,11 @@ public interface IGame {
 	public void startNewGame();
 	public void discardGame();
 	
-	public void setGameType(EGameType GameType);
-	public EGameType getGameType();
+	public void setGameType(TGame GameType);
+	public TGame getGameType();
 	
-	public void setCurrentRound(EGameRoundType GameRound);
-	public EGameRoundType getCurrentRound();
+	public void setCurrentRound(TRound GameRound);
+	public TRound getCurrentRound();
 	
 	public void nextRound();
 	public void prevRound();

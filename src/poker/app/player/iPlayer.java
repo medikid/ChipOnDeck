@@ -2,6 +2,7 @@ package poker.app.player;
 
 import org.sikuli.api.ScreenRegion;
 
+import poker.app.game.TRound;
 import poker.app.table.Table;
 
 public interface IPlayer {	
@@ -43,6 +44,10 @@ public interface IPlayer {
 	public void doAction();
 	public void didAction(PlayerAction pAction);
 	public void cancelAction();
+	public void updateActionTrend(TRound gRound, PlayerAction pAction);
+	public PlayerAction getLastAction(TRound gRound);
+	public void removeActionTrend(TRound gRound);
+	public void resetActionTrend();
 	
 	public void startActionObserver();
 	public void stopActionObserver();

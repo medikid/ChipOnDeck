@@ -6,7 +6,8 @@ import java.util.List;
 
 import org.sikuli.api.ScreenRegion;
 
-import poker.app.player.EPlayerActionType;
+import poker.app.game.TRound;
+import poker.app.player.TPlayerAction;
 import poker.app.table.Table;
 
 public class Player implements IPlayer {
@@ -26,7 +27,8 @@ public class Player implements IPlayer {
 	public boolean isStatusObserverActive = false;	
 	public StatusObserver statusObserver = null;
 	
-	public EPlayerActionType action=null;
+	public ActionTrend actionTrend=null;
+	public TPlayerAction action=null;
 	public double actionCash = (Double) null;
 	
 	public boolean isActionPending = false;
@@ -37,6 +39,10 @@ public class Player implements IPlayer {
 	private List<PlayerActionEventListener> _ActionEventListeners = new ArrayList<PlayerActionEventListener>();
 	
 	public Player(){		
+	}
+	
+	public void INIT(){
+		this.actionTrend = new ActionTrend();
 	}
 	
 //	#region 
@@ -82,6 +88,7 @@ public class Player implements IPlayer {
 		return this.tag;
 	}
 	
+	//no need to call this as this is being taken care at the level of setting next player
 	@Override
 	public void setPrevPlayer(Player PrevPlayer) {
 		this.prevPlayer = PrevPlayer;
@@ -93,9 +100,11 @@ public class Player implements IPlayer {
 		return this.prevPlayer;
 	}
 
+	// will also set the prevPlayer for the next player
 	@Override
 	public void setNextPlayer(Player NextPlayer) {
 		this.nextPlayer = NextPlayer;
+		NextPlayer.setPrevPlayer(this);
 		
 	}
 
@@ -175,6 +184,9 @@ public class Player implements IPlayer {
 	public void didAction(PlayerAction pAction) {
 		this.setAction(pAction);		
 		this.setActionPending(false);
+		
+		
+		
 		this.passActionRequest();
 		
 		this.playerActionEventHandler(pAction);		
@@ -209,6 +221,26 @@ public class Player implements IPlayer {
 	public void cancelAction() {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public void updateActionTrend(TRound gRound, PlayerAction pAction) {
+		this.actionTrend.add(gRound, pAction);
+		
+	}
+	@Override
+	public  PlayerAction getLastAction(TRound gRound) {
+		return this.actionTrend.getLastAction(gRound);
+	}
+
+	@Override
+	public void removeActionTrend(TRound gRound) {
+		this.actionTrend.removeLastAction(gRound);
+		
+	}
+
+	@Override
+	public void resetActionTrend() {
+		this.actionTrend.reset();
 	}
 	
 	@Override
@@ -255,10 +287,6 @@ public class Player implements IPlayer {
 			((PlayerActionEventListener) i.next()).onAction(e);
 		}
 	}
-
-
-	
-
 
 
 }

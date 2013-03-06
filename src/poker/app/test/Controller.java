@@ -1,7 +1,7 @@
 package poker.app.test;
 
 import poker.app.WindowManager;
-import poker.app.GUI.GlassOverlay;
+import poker.app.GUI.Displayer.*;
 
 public class Controller {
 	WindowManager wManager;
