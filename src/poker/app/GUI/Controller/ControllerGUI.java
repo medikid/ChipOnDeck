@@ -8,6 +8,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Panel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -24,7 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 
-public class ControllerGUI {
+public class ControllerGUI implements ActionListener {
 
 	private JFrame frmChipondeckController;
 	private JTextField textFieldActionCash;
@@ -176,6 +178,8 @@ public class ControllerGUI {
 		gbc_tglbtnVmware.gridx = 0;
 		gbc_tglbtnVmware.gridy = 0;
 		frmChipondeckController.getContentPane().add(tglbtnVmware, gbc_tglbtnVmware);
+		tglbtnVmware.setActionCommand("SetVMWareMode");
+		tglbtnVmware.addActionListener(this);
 		
 		JButton btnGrabWindows = new JButton("GrabWindows");
 		GridBagConstraints gbc_btnGrabWindows = new GridBagConstraints();
@@ -184,6 +188,8 @@ public class ControllerGUI {
 		gbc_btnGrabWindows.gridx = 1;
 		gbc_btnGrabWindows.gridy = 0;
 		frmChipondeckController.getContentPane().add(btnGrabWindows, gbc_btnGrabWindows);
+		btnGrabWindows.setActionCommand("GrabWindows");
+		btnGrabWindows.addActionListener(this);
 		
 		JButton btnBtn = new JButton("Btn");
 		GridBagConstraints gbc_btnBtn = new GridBagConstraints();
@@ -192,6 +198,7 @@ public class ControllerGUI {
 		gbc_btnBtn.gridx = 2;
 		gbc_btnBtn.gridy = 0;
 		frmChipondeckController.getContentPane().add(btnBtn, gbc_btnBtn);
+		btnBtn.addActionListener(this);
 		
 		JComboBox comboBox_SelectWindow = new JComboBox();
 		GridBagConstraints gbc_comboBox_SelectWindow = new GridBagConstraints();
@@ -472,6 +479,12 @@ public class ControllerGUI {
 		gbc_btnGo.gridx = 6;
 		gbc_btnGo.gridy = 15;
 		frmChipondeckController.getContentPane().add(btnGo, gbc_btnGo);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JButton clickedButton = (JButton) e.getSource();
+		System.out.println("You clicked a button " + clickedButton.getActionCommand());
 	}
 
 }

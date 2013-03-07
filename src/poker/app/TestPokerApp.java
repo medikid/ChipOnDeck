@@ -1,6 +1,7 @@
 package poker.app;
 
 import poker.app.GUI.Controller.Controller;
+import poker.app.GUI.Controller.ControllerGUI;
 import poker.app.GUI.Displayer.GlassOverlay;
 
 import java.awt.event.ActionEvent;
@@ -52,12 +53,15 @@ import org.sikuli.core.*;
 import org.sikuli.ocr.*;
 import org.sikuli.script.Region;
 
+import com.sun.jna.platform.win32.Netapi32Util.User;
+
 import poker.PokerAPI;
 import poker.User32;
 import poker.Images;
 import poker.app.Timer.TimerListener;
 import poker.app.VMWare.PLAY_MODE;
 import poker.app.WindowManager.WindowType;
+import poker.app.config.AppConfig;
 import poker.app.table.ETableType;
 import poker.app.table.PNTable;
 import poker.app.table.Table;
@@ -83,8 +87,11 @@ public class TestPokerApp  {
 	@SuppressWarnings({ "unused", "static-access" })
 	public static void main(String[] args) throws Exception {
 		TestPokerApp tpa = new TestPokerApp();
-		Controller controller = new Controller(true, true);
-		controller.main(null);
+		ControllerGUI.main(null);
+		User u = new User();
+		System.out.println(System.getProperty("user.dir"));
+		AppConfig ac = new AppConfig();
+		ac.XMLWriter();
 	//	gO.main(null);
 		//poker.app.test.ControllerGUI.main(null);
 		
