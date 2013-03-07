@@ -1,30 +1,34 @@
-package poker.app.GUI.Controller;
+package poker.app.test;
 
-
-import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.GridBagConstraints;
+
+import javax.swing.JFrame;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
+import javax.swing.JMenuBar;
 import java.awt.GridBagLayout;
+import java.awt.Button;
+import java.awt.GridBagConstraints;
+import javax.swing.JToggleButton;
 import java.awt.Insets;
 import java.awt.Panel;
-
-import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.JSlider;
 import javax.swing.JTextField;
-import javax.swing.JToggleButton;
+import javax.swing.JButton;
+import java.awt.Font;
+import javax.swing.JSlider;
+import java.awt.Canvas;
+import javax.swing.JPanel;
+import javax.swing.JComboBox;
+import java.awt.Color;
 import javax.swing.SwingConstants;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
+import javax.swing.JCheckBoxMenuItem;
 
-public class ControllerGUI {
+public class GUITest {
 
 	private JFrame frmChipondeckController;
 	private JTextField textFieldActionCash;
@@ -36,7 +40,7 @@ public class ControllerGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ControllerGUI window = new ControllerGUI();
+					GUITest window = new GUITest();
 					window.frmChipondeckController.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -48,7 +52,7 @@ public class ControllerGUI {
 	/**
 	 * Create the application.
 	 */
-	public ControllerGUI() {
+	public GUITest() {
 		initialize();
 	}
 
