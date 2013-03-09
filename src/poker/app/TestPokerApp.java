@@ -61,6 +61,7 @@ import poker.Images;
 import poker.app.Timer.TimerListener;
 import poker.app.VMWare.PLAY_MODE;
 import poker.app.WindowManager.WindowType;
+import poker.app.XML.SessionParser;
 import poker.app.config.AppConfig;
 import poker.app.table.ETableType;
 import poker.app.table.PNTable;
@@ -87,13 +88,9 @@ public class TestPokerApp  {
 	@SuppressWarnings({ "unused", "static-access" })
 	public static void main(String[] args) throws Exception {
 		TestPokerApp tpa = new TestPokerApp();
-		ControllerGUI.main(null);
-		User u = new User();
-		System.out.println(System.getProperty("user.dir"));
-		AppConfig ac = new AppConfig();
-		ac.XMLWriter();
-	//	gO.main(null);
-		//poker.app.test.ControllerGUI.main(null);
+		
+		SessionParser sp = new SessionParser();
+		sp.Reader();
 		
 		
 		
