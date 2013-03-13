@@ -21,7 +21,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 
-import poker.app.Timer.TimerListener;
+import poker.utils.Timer.TimerListener;
 
 public class GlassOverlay implements Runnable {
 	private Thread guiThread = null;

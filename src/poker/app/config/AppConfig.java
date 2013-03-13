@@ -8,6 +8,15 @@ import java.io.FileOutputStream;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+
 public class AppConfig {
 	public String directoryName = "Settings";
 	public File folderSettings = new File(System.getProperty("user.dir") + "\\"
@@ -16,7 +25,7 @@ public class AppConfig {
 	public String pokerApp = "PlayNow";
 
 	public AppConfig() {
-
+			
 	}
 
 	public void main(String[] args) {

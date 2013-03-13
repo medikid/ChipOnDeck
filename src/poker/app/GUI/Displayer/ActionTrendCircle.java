@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Stroke;
 
-import poker.app.player.Player;
+import poker.game.players.Player;
 
 public class ActionTrendCircle{
     public Rectangle dash = null;
@@ -29,5 +29,8 @@ public class ActionTrendCircle{
         g2.drawArc(100, 100, 100, 100, 180, 90);
         g2.setColor(Color.gray);
         g2.drawArc(100, 100, 100, 100, 180, -90);
+        
+        PlayerScoreBoard psb = new PlayerScoreBoard();
+        psb.paintBackground(g);
     }
 }

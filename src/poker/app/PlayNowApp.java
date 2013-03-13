@@ -22,7 +22,7 @@ import org.sikuli.api.visual.DesktopCanvas;
 import org.sikuli.api.visual.ScreenPainter;
 import org.sikuli.script.App;
 
-import poker.PokerAPI;
+import poker.API.PokerAPI;
 import poker.app.VMWare.PLAY_MODE;
 import poker.app.WindowManager.WindowType;
 import poker.app.logger.Logger;

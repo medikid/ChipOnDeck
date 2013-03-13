@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 import org.sikuli.api.DesktopScreenRegion;
 
-import poker.app.player.Player;
+import poker.game.players.Player;
 
 class DisplayPanel extends JPanel {
 	Player p;

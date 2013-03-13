@@ -9,7 +9,7 @@ import org.sikuli.api.robot.Key;
 import org.sikuli.api.robot.KeyModifier;
 import org.sikuli.api.visual.ScreenRegionCanvas;
 
-import poker.PokerAPI;
+import poker.API.PokerAPI;
 
 public class VMWare extends PokerAPI {
 	public enum PLAY_MODE { UNITY_MODE, FULLSCREEN_MODE }

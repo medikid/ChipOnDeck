@@ -1,10 +1,10 @@
 package poker.app.game;
 
-import poker.app.game.card.Card;
-import poker.app.game.card.hand.Flop;
-import poker.app.game.card.hand.River;
-import poker.app.game.card.hand.Turn;
-import poker.app.player.Player;
+import poker.game.tools.cards.*;
+import poker.game.players.Player;
+import poker.game.tools.cards.hand.Flop;
+import poker.game.tools.cards.hand.River;
+import poker.game.tools.cards.hand.Turn;
 
 
 public class Game {
