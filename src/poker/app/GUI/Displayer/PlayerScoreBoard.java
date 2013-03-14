@@ -32,10 +32,6 @@ public class PlayerScoreBoard {
 		g2.setComposite(originalComposite);
 		g2.setColor(Color.white);
 		g2.drawString("Hello World", playerDash.x + 25, playerDash.y + playerDash.height + 25);
-		
-		
-		
-		
 	}
 	
 }

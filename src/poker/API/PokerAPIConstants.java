@@ -18,6 +18,9 @@ import poker.app.logger.Logger;
 
 public class PokerAPIConstants {
 	
+	//Environment Constants
+	public static final String SYSTEM_NAME = PokerAPI.getComputerName();
+	
 	//APP RELATED CONSTANTS
 	public static final String PlayNow_USERNAME = "ragavgroups";
 	public static final String PlayNow_PASSWORD = "Ragav76";

@@ -21,7 +21,7 @@ import com.sun.jna.platform.win32.WinDef.HWND;
 
 public class Window {
 	public App app;
-	public Region window;
+	public Rectangle window;
 	public String windowTitle;
 	public WindowType windowType;
 	public int windowNumber;
@@ -54,6 +54,18 @@ public class Window {
 		
 	}
 	
+	public Window(WindowType WType, String WindowTitle, HWND hWnd, Rectangle rect) throws AWTException{
+		app = new App(WindowTitle);
+		mouse = new DesktopMouse();
+		keyboard = new DesktopKeyboard();
+		robot = new Robot();
+		this.setWindowType(WType);
+		this.setWindowHandle(hWnd);
+		this.setWindowTitle(WindowTitle);
+		this.setWindowRegion(rect);
+		
+	}
+	
 	public void setWindowHandle(HWND hWindow){
 		this.hWnd = hWindow;
 	}
@@ -79,10 +91,15 @@ public class Window {
 	}
 	
 	public void setWindowRegion(){
-		this.window = app.window(0);
+		//this.window = app.window(0);
 	}
 	
-	public Region getWindowRegion(){
+	public void setWindowRegion(Rectangle rect){
+		this.window = rect;
+		System.out.println("Window window region is set to rect" + rect.toString());
+	}
+	
+	public Rectangle getWindowRegion(){
 		return this.window;
 	}
 	

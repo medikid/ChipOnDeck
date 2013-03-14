@@ -1,8 +1,11 @@
 package poker.API;
 
+import java.awt.Rectangle;
+
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.BaseTSD.LONG_PTR;
+import com.sun.jna.platform.win32.WinDef.RECT;
 import com.sun.jna.platform.win32.WinDef.UINT_PTR;
 import com.sun.jna.platform.win32.WinUser;
 import com.sun.jna.platform.win32.WinDef.HWND;
@@ -20,6 +23,8 @@ public interface User32 extends StdCallLibrary {
     boolean SetForegroundWindow( HWND hWnd );
     
     boolean MoveWindow(HWND hWnd, int X, int Y, int nWidth, int nHeight, boolean bRepaint);
+    
+    int GetWindowRect(HWND hWnd, RECT lpRect);
         
     public static final Pointer HWND_TOP        = Pointer.createConstant(0);
     public static final Pointer HWND_BOTTOM     = Pointer.createConstant(1);

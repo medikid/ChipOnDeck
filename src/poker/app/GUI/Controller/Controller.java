@@ -1,5 +1,9 @@
 package poker.app.GUI.Controller;
 
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,47 +13,66 @@ import poker.app.WindowManager;
 import poker.app.WindowManager.WindowType;
 import poker.app.GUI.Controller.ControllerGUI;
 import poker.app.GUI.Displayer.GlassOverlay;
+import poker.game.tools.tables.Table;
 import poker.game.tools.tables.Tables;
 
 public class Controller {
-	ControllerGUI  controllerGUI;
-	Tables	tables;
-	GlassOverlay	displayer;
+	public ControllerGUI  cGUI;
+	public Tables	tables;
+	public GlassOverlay	glass;
 	public WindowManager wManager;
+	Boolean isDisplayerEnabled = true;
+	Boolean isControllerGUIEnabled = true;
+	Boolean isVMWareModeEnabled = true;
 	
-	public Controller(Boolean isDisplayerEnabled, Boolean isControllerGUIEnabled){
+	public Controller(){
 
 		this.wManager = new WindowManager();
 		
 		if (isDisplayerEnabled){
-			this.displayer = new GlassOverlay();
+			this.glass = new GlassOverlay();
 		}
 		
 		if (isControllerGUIEnabled){
-			this.controllerGUI = new ControllerGUI();
-			this.controllerGUI.main(null);
+						
 		}
-		
-		
-		
 	}
 	
-	public void main(String[] args){
-		new Controller(true, true);
-	}
+	/*
+	 * GUI Related Functions
+	 */
 	
-	public void GrabAllWindows(){
-		Map<WindowType, String> kwList = new HashMap<WindowType, String>();
-		kwList.put(WindowType.LOBBY, "Poker | PlayNow.com");
-		kwList.put(WindowType.VMWARE, "VMWare");
-		kwList.put(WindowType.TABLE, "Table:");
-		
-		//this.wManager.Windows = this.wManager.getWindows(WindowType.TABLE, "Table");
-		
-		this.wManager.grabWindowsByKeywordList();
-		System.out.println(this.wManager.toString());
+	public void StartGUI(){
+		ControllerGUI.main(null);		
 	}
-	
 
+	/*
+	 * Window Related Functions
+	 */
+	public void GrabWindows(){
+		this.wManager.grabWindowsByKeywordList();
+	}
+	
+	public void TileTables(){
+		this.wManager.tileTables();
+	}
+	
+	/*
+	 * Poker App related Functions
+	 */
+	
+	
+	/*
+	 * Table Related Functions
+	 */
+	public void initializeTableObjects(){
+		for(String tableTitle: this.wManager.Tables){
+			Window tableWindow = this.wManager.Windows.get(tableTitle);
+			Table t = new Table(tableWindow);
+			t.setTableName(tableTitle);
+			
+			this.glass.dPanel.PaintObj.GridLines(t, 5, 6);
+		}
+	}
 	
 }

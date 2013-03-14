@@ -291,7 +291,7 @@ public class PokerAPI {
 		System.out.println("Rand clicked at " + randClickPoint.toString());
 	}
 	
-	public String getComputerName(){
+	public static String getComputerName(){
 		String computerName = null;
 		try {
 		    computerName = InetAddress.getLocalHost().getHostName();

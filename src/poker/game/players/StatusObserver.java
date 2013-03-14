@@ -7,7 +7,7 @@ import org.sikuli.api.event.StateChangeListener;
 import org.sikuli.api.visual.Canvas;
 import org.sikuli.api.visual.DesktopCanvas;
 
-import poker.resources.Images;
+import poker.resources.Image;
 
 public class StatusObserver implements Runnable, StateChangeListener {
 	Player p = null;
@@ -24,12 +24,12 @@ public class StatusObserver implements Runnable, StateChangeListener {
 		ScreenRegion pDash = p.DashRegion;
 		while (StatusObserverThread == myThread){
 			
-			pDash.addState(new ImageTarget(Images.PlayerStatusPSmall), EPlayerStatusType.PSMALL );
-			pDash.addState(new ImageTarget(Images.PlayerStatusPBig), EPlayerStatusType.PBIG );
-			pDash.addState(new ImageTarget(Images.PlayerStatusWinner), EPlayerStatusType.WINNER );
-			pDash.addState(new ImageTarget(Images.PlayerStatusMuck), EPlayerStatusType.MUCK);
-			pDash.addState(new ImageTarget(Images.PlayerStatusSitout), EPlayerStatusType.SITOUT);
-			pDash.addState(new ImageTarget(Images.PlayerStatusBuyin), EPlayerStatusType.BUYIN);
+			pDash.addState(new ImageTarget(Image.PlayerStatusPSmall), EPlayerStatusType.PSMALL );
+			pDash.addState(new ImageTarget(Image.PlayerStatusPBig), EPlayerStatusType.PBIG );
+			pDash.addState(new ImageTarget(Image.PlayerStatusWinner), EPlayerStatusType.WINNER );
+			pDash.addState(new ImageTarget(Image.PlayerStatusMuck), EPlayerStatusType.MUCK);
+			pDash.addState(new ImageTarget(Image.PlayerStatusSitout), EPlayerStatusType.SITOUT);
+			pDash.addState(new ImageTarget(Image.PlayerStatusBuyin), EPlayerStatusType.BUYIN);
 			
 			pDash.addStateChangeEventListener(this);
 		}

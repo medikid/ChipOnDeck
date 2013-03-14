@@ -34,16 +34,18 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import poker.app.Window;
 import poker.app.WindowManager;
+import poker.app.GUI.Displayer.GlassOverlay;
 import poker.game.tools.tables.Table;
 
-public class ControllerGUI implements ActionListener {
-
-	private JFrame frmChipondeckController;
+public class ControllerGUI extends Controller implements ActionListener, Runnable {
+	public JFrame frmChipondeckController;
 	private JTextField textFieldActionCash;
-	public WindowManager winManager = null;
+	private WindowManager winManager;
+	private Thread cGUIThread = null;
 	
 	JButton tglbtnVmware;
 	JButton btnGrabWindows;
@@ -81,8 +83,15 @@ public class ControllerGUI implements ActionListener {
 	JButton btnGo;
 
 	/**
+	 * Create the application.
+	 */
+	public ControllerGUI() {
+	}
+
+	/**
 	 * Launch the application.
 	 */
+	/*
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -95,14 +104,30 @@ public class ControllerGUI implements ActionListener {
 			}
 		});
 	}
-
-	/**
-	 * Create the application.
-	 */
-	public ControllerGUI() {
-		initialize();
-		this.winManager = new WindowManager();
+	*/
+	public static void main(String[] args) {		
+		SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			public void run() {
+				new ControllerGUI().Start();
+				}
+			});
+		
 	}
+	
+	@Override
+	public void run() {
+		this.initialize();
+		this.frmChipondeckController.setVisible(true);
+	}
+	
+	public void Start(){
+		if(this.cGUIThread == null){
+			this.cGUIThread = new Thread(this, "cGUI Thread");
+			this.cGUIThread.start();
+		}
+	}
+
 
 	/**
 	 * Initialize the contents of the frame.
@@ -586,13 +611,7 @@ public class ControllerGUI implements ActionListener {
 		//this.panelTablesDisplay.GBL_rearrange();
 	}
 	
-	public void initializeTableObjects(){
-		for(String tableTitle: this.winManager.Tables){
-			Window tableWindow = this.winManager.Windows.get(tableTitle);
-			Table t = new Table(tableWindow);
-			t.setTableName(tableTitle);
-		}
-	}
+
 	
 	
 	@Override
@@ -613,13 +632,12 @@ public class ControllerGUI implements ActionListener {
 					Actions.SetVMwareMode((JButton)clickedComponent);
 					break;
 				case "GrabWindows":
-					Actions.GrabWindows(this.winManager);
+					this.GrabWindows();
 					System.out.println(this.winManager.toString());
 					
 					this.populate_combo_SelectWindows();
 					this.populate_combo_WindowAction();
 					this.populate_tablesDisplayPanel();
-					this.winManager.tileTables();
 					this.initializeTableObjects();
 					
 					System.out.println("Windows list have " + String.valueOf(this.winManager.Windows.size()) + "Windows");
@@ -651,14 +669,13 @@ public class ControllerGUI implements ActionListener {
 			}			
 		}
 		
-		public static void GrabWindows(WindowManager windowManager){
-			windowManager.grabWindowsByKeywordList();
-		}
 		
 		public static void PopulateWindowsComboList(){
 			
 		}
 	}
+
+
 
 
 }

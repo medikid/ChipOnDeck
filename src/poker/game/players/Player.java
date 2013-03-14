@@ -29,7 +29,7 @@ public class Player implements IPlayer {
 	
 	public ActionTrend actionTrend=null;
 	public TPlayerAction action=null;
-	public double actionCash = (Double) null;
+	public double actionCash ;
 	
 	public boolean isActionPending = false;
 	

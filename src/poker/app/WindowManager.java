@@ -15,6 +15,7 @@ import poker.API.User32;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef.HWND;
+import com.sun.jna.platform.win32.WinDef.RECT;
 import com.sun.jna.platform.win32.WinDef.UINT_PTR;
 import com.sun.jna.platform.win32.WinUser.WNDENUMPROC;
 
@@ -86,11 +87,13 @@ public class WindowManager {
 			public boolean callback(HWND hWnd, Pointer arg1) {
 				byte[] windowText = new byte[512];
 	            user32.GetWindowTextA(hWnd, windowText, 512);
-	            String wText = Native.toString(windowText);	
+	            String wText = Native.toString(windowText);
+	            RECT winRect = new RECT();
+	            user32.GetWindowRect(hWnd, winRect);
 	            
 	            if (wText.contains(keyWord)){	            	
 					try {
-						Window 	window = new Window(winType, wText, hWnd);
+						Window 	window = new Window(winType, wText, hWnd, winRect.toRectangle());
 						windows.add(window);
 					} catch (AWTException e) {
 						// TODO Auto-generated catch block
@@ -192,11 +195,13 @@ public class WindowManager {
 				public boolean callback(HWND hWnd, Pointer arg1) {
 					byte[] windowText = new byte[512];
 		            user32.GetWindowTextA(hWnd, windowText, 512);
+		            RECT winRect = new RECT();
+		            user32.GetWindowRect(hWnd, winRect);
 		            String wText = Native.toString(windowText);
 		            
 		            if (wText.contains(keyWord)){	            	
 						try {
-							Window 	window = new Window(winType, wText, hWnd);
+							Window 	window = new Window(winType, wText, hWnd, winRect.toRectangle());
 							grabbedWindows.add(window);
 						} catch (AWTException e) {
 							// TODO Auto-generated catch block
@@ -307,6 +312,18 @@ public class WindowManager {
 			for(Window win: wins){
 				this.setWindowActive(win.getWindowHandle());
 			}
+	 }
+	 
+	 public Rectangle getWindowBounds(Window window){
+		 RECT winRect = new RECT();
+		 user32.GetWindowRect(window.getWindowHandle(), winRect);
+		 return winRect.toRectangle();
+	 }
+	 
+	 public void setWindowBounds(Window window){
+		 RECT winRect = new RECT();		 
+		 user32.GetWindowRect(window.hWnd, winRect);
+		 window.setWindowRegion(winRect.toRectangle());
 	 }
 	 
 	 @SuppressWarnings({ "static-access", "static-access" })

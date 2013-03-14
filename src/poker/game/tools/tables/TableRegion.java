@@ -18,7 +18,7 @@ import org.sikuli.api.visual.ScreenRegionCanvas;
 import poker.app.Window;
 import poker.app.WindowManager;
 import poker.game.players.Player;
-import poker.resources.Images;
+import poker.resources.Image;
 
 public class TableRegion {
 	ScreenRegion tableWindowRegion;
@@ -44,11 +44,17 @@ public class TableRegion {
 	}
 	
 	public TableRegion(Window tableWindow){
-		ScreenRegion TableWindowRegion =  new DesktopScreenRegion(
+		/*ScreenRegion TableWindowRegion =  new DesktopScreenRegion(
 				tableWindow.getWindowRegion().x,
 				tableWindow.getWindowRegion().y,
 				tableWindow.getWindowRegion().w,
 				tableWindow.getWindowRegion().h);
+		*/
+		ScreenRegion TableWindowRegion =  new DesktopScreenRegion(
+				tableWindow.window.x,
+				tableWindow.window.y,
+				tableWindow.window.width,
+				tableWindow.window.height );
 		this.setTableWindowRegion(TableWindowRegion);
 		this.INITtableRegion();
 	}
@@ -103,9 +109,14 @@ public class TableRegion {
 	
 	private ScreenRegion deriveTableFrame(){		
 		ScreenRegion TableFrame = null;
-		Target TableAnchorXY = new ImageTarget(Images.PNTableAnchorXY);
-		Target TableAnchorW = new ImageTarget(Images.PNTableAnchorW);
-		Target TableAnchorH = new ImageTarget(Images.PNTableAnchorH);
+		
+		System.out.println("Image location folder is " + Image.PNTableAnchorXY.getPath() );
+		
+		Target TableAnchorXY = new ImageTarget(Image.PNTableAnchorXY);
+		Target TableAnchorW = new ImageTarget(Image.PNTableAnchorW);
+		Target TableAnchorH = new ImageTarget(Image.PNTableAnchorH);
+		
+		System.out.println("Searching for TableFroame anchors inside" + this.tableWindowRegion.toString());
 		
 		ScreenRegion TableFrameXY = this.tableWindowRegion.find(TableAnchorXY);
 		ScreenRegion TableFrameW = this.tableWindowRegion.find(TableAnchorW);
@@ -162,26 +173,28 @@ public class TableRegion {
 		Point startPoint;
 		Point endPoint;
 		Rectangle rect;
-	
 		
+		System.out.println("Table Frame is bounded by " + this.tableFrame.toString());
 		int row = 1;
 		while (row < rows){
-			startPoint = new Point(X, Y + (int)(H * (row / rows)));
-			endPoint = new Point(X + W, Y + (int)(H * (row / rows)));
+			startPoint = new Point(X, Y + (int)( (H * row) / rows));
+			endPoint = new Point(X + W, Y + (int)((H * row) / rows));
 			rect = new Rectangle(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
 			gridLines.add(rect);
+			System.out.println("Row line " + String.valueOf(row) + ": " + rect.toString());
 			
 			row++;
 		}
 		
 		int col = 1;
 		while (col < cols){
-			startPoint = new Point(X + (int)(W * (col / cols)), Y);
-			endPoint = new Point(X + (int)(W * (col / cols)), Y + H);
+			startPoint = new Point(X + (int)((W * col) / cols), Y);
+			endPoint = new Point(X + (int)((W * col) / cols), Y + H);
 			rect = new Rectangle(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
 			gridLines.add(rect);
+			System.out.println("Col line " + String.valueOf(col) + ": " + rect.toString());
 			
-			row++;
+			col++;
 		}
 		
 		return gridLines;
@@ -190,7 +203,7 @@ public class TableRegion {
 	public List<Player> derivePlayerDash(){
 		List<Player> Players = new ArrayList<Player>();
 		ScreenRegion playerDash;
-		Target tPlayerDashAnchor = new ImageTarget(Images.PNTablePlayerDashAnchor);
+		Target tPlayerDashAnchor = new ImageTarget(Image.PNTablePlayerDashAnchor);
 		tPlayerDashAnchor.setMinScore(0.95);
 		
 		if(this.tableFrame == null){

@@ -12,7 +12,7 @@ import org.sikuli.api.event.StateChangeListener;
 import org.sikuli.api.visual.Canvas;
 import org.sikuli.api.visual.DesktopCanvas;
 
-import poker.resources.Images;
+import poker.resources.Image;
 
 public class ActionObserver implements Runnable, StateChangeListener {
 	Player p = null;
@@ -31,12 +31,12 @@ public class ActionObserver implements Runnable, StateChangeListener {
 		ScreenRegion pDash = p.DashRegion;
 		while (ActionObserverThread == myThread){
 			
-			pDash.addState(new ImageTarget(Images.PlayerActionFold), TPlayerAction.FOLD );
-			pDash.addState(new ImageTarget(Images.PlayerActionCheck), TPlayerAction.CHECK );
-			pDash.addState(new ImageTarget(Images.PlayerActionCall), TPlayerAction.CALL );
-			pDash.addState(new ImageTarget(Images.PlayerActionBet), TPlayerAction.BET);
-			pDash.addState(new ImageTarget(Images.PlayerActionRaise), TPlayerAction.RAISE);
-			pDash.addState(new ImageTarget(Images.PlayerActionReraise), TPlayerAction.RERAISE);
+			pDash.addState(new ImageTarget(Image.PlayerActionFold), TPlayerAction.FOLD );
+			pDash.addState(new ImageTarget(Image.PlayerActionCheck), TPlayerAction.CHECK );
+			pDash.addState(new ImageTarget(Image.PlayerActionCall), TPlayerAction.CALL );
+			pDash.addState(new ImageTarget(Image.PlayerActionBet), TPlayerAction.BET);
+			pDash.addState(new ImageTarget(Image.PlayerActionRaise), TPlayerAction.RAISE);
+			pDash.addState(new ImageTarget(Image.PlayerActionReraise), TPlayerAction.RERAISE);
 			
 			pDash.addStateChangeEventListener(this);
 		}
