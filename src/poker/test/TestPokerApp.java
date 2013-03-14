@@ -94,8 +94,8 @@ public class TestPokerApp  {
 		TestPokerApp tpa = new TestPokerApp();
 		//poker.app.test.ControllerGUI.main(null);
 		
-		Table t = new Table(10);
-		t.deriveAllTableRegions();
+		ControllerGUI c = new ControllerGUI();
+		c.main(null);
 	}
 	
 	

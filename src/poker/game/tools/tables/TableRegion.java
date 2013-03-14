@@ -34,13 +34,13 @@ public class TableRegion {
 	ScreenRegion playerDash9;
 	ScreenRegion playerDash10;
 	
-	Canvas canvas;	
+	Canvas canvas = new DesktopCanvas();	
 	int tableSize;
 	double rowGridOffset = 0.200;
 	double colGridOffset = 0.166;
 	
 	public TableRegion(){
-		
+		this.INITtableRegion();
 	}
 	
 	public TableRegion(Window tableWindow){
@@ -50,14 +50,21 @@ public class TableRegion {
 				tableWindow.getWindowRegion().w,
 				tableWindow.getWindowRegion().h);
 		this.setTableWindowRegion(TableWindowRegion);
-		canvas = new DesktopCanvas();
+		this.INITtableRegion();
 	}
-	
-	
+		
 	public TableRegion(ScreenRegion TableWindowRegion){
 		this.setTableWindowRegion(TableWindowRegion);
-		canvas = new DesktopCanvas();
-	}	
+		this.INITtableRegion();
+	}
+	
+	/*
+	 * will set the tableframe regions and initated canvas
+	 */
+	public void INITtableRegion(){
+		this.setTableFrame();
+		
+	}
 	
 	public void setTableWindowRegion(ScreenRegion TableWindow){
 		this.tableWindowRegion = TableWindow;
@@ -94,7 +101,7 @@ public class TableRegion {
 		this.canvas.clear();
 	}
 	
-	public ScreenRegion deriveTableFrame(){
+	private ScreenRegion deriveTableFrame(){		
 		ScreenRegion TableFrame = null;
 		Target TableAnchorXY = new ImageTarget(Images.PNTableAnchorXY);
 		Target TableAnchorW = new ImageTarget(Images.PNTableAnchorW);
@@ -102,14 +109,15 @@ public class TableRegion {
 		
 		ScreenRegion TableFrameXY = this.tableWindowRegion.find(TableAnchorXY);
 		ScreenRegion TableFrameW = this.tableWindowRegion.find(TableAnchorW);
-		ScreenRegion TableFrameH = this.tableWindowRegion.find(TableAnchorH);		
-		
+		ScreenRegion TableFrameH = this.tableWindowRegion.find(TableAnchorH);
+
 		int X = TableFrameXY.getBounds().x;
 		int Y = TableFrameXY.getBounds().y;		
 		int W = (TableFrameW.getBounds().x + TableFrameW.getBounds().width) - X ;
 		int H = (TableFrameH.getBounds().y + TableFrameH.getBounds().height) - Y;
 		
-		TableFrame = new DesktopScreenRegion(X, Y, W, H);		
+		TableFrame = new DesktopScreenRegion(X, Y, W, H);
+		System.out.println("Table frame derived with dimensions of " + TableFrame.toString());
 		
 		return TableFrame;
 	}
@@ -184,6 +192,12 @@ public class TableRegion {
 		ScreenRegion playerDash;
 		Target tPlayerDashAnchor = new ImageTarget(Images.PNTablePlayerDashAnchor);
 		tPlayerDashAnchor.setMinScore(0.95);
+		
+		if(this.tableFrame == null){
+			this.setTableFrame();
+		}
+		
+		
 		List<ScreenRegion> matches = this.tableFrame.findAll(tPlayerDashAnchor);
 		for (ScreenRegion p: matches){
 			int X = p.getBounds().x;
@@ -199,6 +213,7 @@ public class TableRegion {
 					);
 			
 			int seatNumber = this.deriveSeatNumber(playerDash);
+			System.out.println("Found new Player with seat number " + String.valueOf(seatNumber));
 			
 			Player pl = new Player();
 			pl.setSeatNumber(seatNumber);

@@ -32,16 +32,15 @@ public class Table extends TableRegion implements ITable {
 		super();
 		this.setTableSize(TableSize);
 		this.setTableType(TableSize);
-		this.INIT();		
+		this.INITtable();		
 	}
 	
 	public Table(Window tableWindow){
 		super(tableWindow);
-		super.deriveTableFrame();
-		List<Player> pList = super.derivePlayerDash();
+		List<Player> pList = this.derivePlayerDash();
 		this.setTableSize(pList.size());
 		this.setTableType(pList.size());
-		this.INIT();
+		this.INITtable();
 		
 		for(Player p: pList){
 			this.players.Add(p);
@@ -49,7 +48,7 @@ public class Table extends TableRegion implements ITable {
 		System.out.println("Table object initiated with total of " + String.valueOf(this.players.playersCount));
 	}
 	
-	public void INIT(){
+	public void INITtable(){
 		this.players = new Players(this);
 		this.Game = new Game();
 	}
@@ -194,7 +193,6 @@ public class Table extends TableRegion implements ITable {
 			this.grabTableWindow("Table");
 		}
 		TableRegion tr = new TableRegion(this.tableWindow);
-		tr.deriveTableFrame();
 		this.tableFrame = tr.tableFrame;
 	}
 

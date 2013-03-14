@@ -11,14 +11,14 @@ import poker.game.players.TPlayerAction;
 import poker.game.tools.tables.Table;
 
 public class Player implements IPlayer {
-	private Table table = null;
-	public String tableTag = null;
-	public int seatNumber = (Integer) null;
-	public String name =  null;
-	public String tag = null;
-	public Player prevPlayer = null;
-	public Player nextPlayer = null;
-	public double cash = (Double) null;
+	private Table table;
+	public String tableTag;
+	public int seatNumber;
+	public String name;
+	public String tag;
+	public Player prevPlayer;
+	public Player nextPlayer;
+	public double cash;
 	
 	public ScreenRegion DashRegion = null;
 	
